@@ -29,9 +29,6 @@ function extlink_page_build() {
     'extAlertText'  => variable_get('extlink_alert_text', 'This link will take you to an external web site. We are not responsible for their content.'),
     'mailtoClass'   => variable_get('extlink_mailto_class', 'mailto'))), 'setting'
   );
-  if (variable_get('extlink_class', 'ext') == 'ext' || variable_get('extlink_mailto_class', 'mailto') == 'mailto') {
-    drupal_add_css($path . '/extlink.css', array('every_page' => TRUE));
-  }
 }
 
 function extlink_admin_settings() {

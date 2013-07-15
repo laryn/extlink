@@ -3,3 +3,4 @@ description = Adds icon next to external links on the site.
 package = User interface
 core = 7.x
 configure = admin/config/user-interface/extlink
+stylesheets[all][] = extlink.css
