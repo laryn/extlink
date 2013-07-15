@@ -16,7 +16,7 @@ function extlink_menu() {
 /**
  * Implementation of hook_init().
  */
-function extlink_init() {
+function extlink_page_build() {
   $path = drupal_get_path('module', 'extlink');
   drupal_add_js($path .'/extlink.js', array('every_page' => TRUE));
   drupal_add_js(array('extlink' => array(
