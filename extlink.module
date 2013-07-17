@@ -131,3 +131,26 @@ function extlink_admin_settings() {
 
   return system_settings_form($form);
 }
+
+function extlink_admin_settings_validate($form, &$form_state) {
+  // Check if the exclude pattern is a valid regular expression
+  if ($exclude = $form_state['values']['extlink_exclude']) {
+    // Testing the regex via replace
+    $regexeval = @preg_replace('/' . $exclude . '/', '', 'Lorem ipsum');
+    // If the regex returns NULL, then throw an error and reset the variable
+    if ($regexeval === NULL) {
+      form_set_error('extlink_exclude', t('Invalid regular expression.'));
+      variable_set('extlink_exclude', '');
+    }
+  }
+  // Check if the include pattern is a valid regular expression
+  if ($include = $form_state['values']['extlink_include']) {
+  // Testing the regex via replace
+  $regexeval = @preg_replace('/' . $include . '/', '', 'Lorem ipsum');
+    // If the regex returns NULL, then throw an error and reset the variable
+    if ($regexeval === NULL) {
+      form_set_error('extlink_include', t('Invalid regular expression.'));
+      variable_set('extlink_include', '');
+    }
+  }
+}
