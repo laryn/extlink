@@ -32,6 +32,18 @@ function extlinkAttach(context) {
     extExclude = new RegExp(Drupal.settings.extlink.extExclude.replace(/\\/, '\\'));
   }
 
+  // Extra external link CSS selector exclusion.
+  var extCssExclude = false;
+  if (Drupal.settings.extlink.extCssExclude) {
+    extCssExclude = Drupal.settings.extlink.extCssExclude;
+  }
+
+  // Extra external link CSS selector explicit.
+  var extCssExplicit = false;
+  if (Drupal.settings.extlink.extCssExplicit) {
+    extCssExplicit = Drupal.settings.extlink.extCssExplicit;
+  }
+
   // Find all links which are NOT internal and begin with http (as opposed
   // to ftp://, javascript:, etc. other kinds of links.
   // When operating on the 'this' variable, the host has been appended to
@@ -43,12 +55,19 @@ function extlinkAttach(context) {
   $("a:not(." + Drupal.settings.extlink.extClass + ", ." + Drupal.settings.extlink.mailtoClass + "), area:not(." + Drupal.settings.extlink.extClass + ", ." + Drupal.settings.extlink.mailtoClass + ")", context).each(function(el) {
     try {
       var url = this.href.toLowerCase();
-      if (url.indexOf('http') == 0 && (!url.match(internal_link) && !(extExclude && url.match(extExclude))) || (extInclude && url.match(extInclude))) {
+      if (url.indexOf('http') == 0 
+            && (!url.match(internal_link) || (extInclude && url.match(extInclude))) 
+            && !(extExclude && url.match(extExclude)) 
+            && !(extCssExclude && $(this).parents(extCssExclude).length > 0)
+            && !(extCssExplicit && $(this).parents(extCssExplicit).length < 1)) {
         external_links.push(this);
       }
       // Do not include area tags with begin with mailto: (this prohibits
       // icons from being added to image-maps).
-      else if (this.tagName != 'AREA' && url.indexOf('mailto:') == 0) {
+      else if (this.tagName != 'AREA' 
+            && url.indexOf('mailto:') == 0 
+	    && !(extCssExclude && $(this).parents(extCssExclude).length > 0)
+	    && !(extCssExplicit && $(this).parents(extCssExplicit).length < 1)) {
         mailto_links.push(this);
       }
     }
