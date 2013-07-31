@@ -1,5 +1,7 @@
 <?php
-
+/**
+ * Implements hook_menu().
+ */
 function extlink_menu() {
   $items = array();
   $items['admin/config/user-interface/extlink'] = array(
@@ -14,7 +16,7 @@ function extlink_menu() {
 }
 
 /**
- * Implementation of hook_init().
+ * Implements hook_page_build().
  */
 function extlink_page_build() {
   $path = drupal_get_path('module', 'extlink');
