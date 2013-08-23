@@ -1,25 +1,77 @@
 <?php
 /**
-* Administration tests for my module.
-*/
-class ExtlinkAdministrationTestCase extends DrupalWebTestCase {
- 
-
-/**
-   * Implements getInfo().
+ * Base class for External Link tests.
+ *
+ * Provides common setup stuff and various helper functions
+ */
+class ExtlinkBaseWebTestCase extends DrupalWebTestCase {
+  /**
+   * User with various administrative permissions.
+   * @var Drupal user
    */
+  protected $admin_user;
+
+  /**
+   * Normal visitor with limited permissions
+   * @var Drupal user;
+   */
+  protected $normal_user;
+  
+    /**
+   * Drupal path of the (general) External Links admin page
+   */
+  const EXTLINK_ADMIN_PATH = 'admin/config/user-interface/extlink';
+  
+  function setUp() {
+    // Enable any module that you will need in your tests.
+    parent::setUp();
+	
+	// Create a normal user.
+    $permissions = array(
+      'access comments', 'post comments', 'skip comment approval',
+      'access content', 'create page content', 'edit own page content',
+    );
+    $this->normal_user = $this->drupalCreateUser($permissions);
+
+    // Create an admin user.
+    $permissions[] = 'administer site configuration';
+    $permissions[] = 'administer permissions';
+    $permissions[] = 'administer content types';
+    $this->admin_user = $this->drupalCreateUser($permissions);
+  }
+}
+
+class ExtlinkTestCase extends ExtlinkBaseWebTestCase {
   public static function getInfo() {
-    return array (
-      'name' => t('Administration'),
-      'description' => t('Administration tests for my module.'),
+    return array(
+      'name' => t('General External Links functionality'),
+      'description' => t('Testing the basic functionality of External Links'),
       'group' => t('External Links'),
     );
   }
-  public function
+}
 
-setUp() {
-    // Enable any module that you will need in your tests.
-    parent::setUp();
+class ExtlinkAdminTestCase extends ExtlinkBaseWebTestCase {
+  public static function getInfo() {
+    return array(
+      'name' => t('External Links administration functionality'),
+      'description' => t('Testing of the External Links administration interface and functionality.'),
+      'group' => t('External Links'),
+    );
+  }
+
+  /**
+   * Test access to the admin pages.
+   */
+  function testAdminAccess() {
+    $this->drupalLogin($this->normal_user);
+    $this->drupalGet(self::EXTLINK_ADMIN_PATH);
+    file_put_contents('tmp.simpletest.html', $this->drupalGetContent());
+    $this->assertText(t('Access denied'), 'Normal users should not be able to access the CAPTCHA admin pages', 'CAPTCHA');
+
+    $this->drupalLogin($this->admin_user);
+    $this->drupalGet(self::EXTLINK_ADMIN_PATH);
+    $this->assertNoText(t('Access denied'), 'Admin users should be able to access the CAPTCHA admin pages', 'CAPTCHA');
   }
 }
 ?>
