@@ -101,7 +101,7 @@ function extlinkAttach(context) {
 
   if (Drupal.settings.extlink.extTarget) {
     // Apply the target attribute to all links.
-    $(external_links).attr('target', Drupal.settings.extlink.extTarget);
+    $(external_links).attr('target', Drupal.settings.extlink.extTargetValue);
   }
 
   Drupal.extlink = Drupal.extlink || {};
