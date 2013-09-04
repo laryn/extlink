@@ -24,9 +24,9 @@ class ExtlinkBaseWebTestCase extends DrupalWebTestCase {
   
   function setUp() {
     // Enable any module that you will need in your tests.
-    parent::setUp();
-	
-	// Create a normal user.
+    parent::setUp('extlink');
+
+    // Create a normal user.
     $permissions = array(
       'access comments', 'post comments', 'skip comment approval',
       'access content', 'create page content', 'edit own page content',
@@ -38,6 +38,25 @@ class ExtlinkBaseWebTestCase extends DrupalWebTestCase {
     $permissions[] = 'administer permissions';
     $permissions[] = 'administer content types';
     $this->admin_user = $this->drupalCreateUser($permissions);
+  }
+  
+  protected function getNodeFormValues() {
+    $edit = array(
+      'title' => 'node_title ' . $this->randomName(32),
+      'body[' . LANGUAGE_NONE . '][0][value]' => 'node_body ' . $this->randomName(256) . ' <a href="http://google.com">Google!</a>',
+    );
+    return $edit;
+  }
+  
+  /**
+   * Test if External Link is present
+   */
+  protected function assertExternalLinkPresence() {
+    $elements = $this->xpath('//span[@class="ext"]');
+    if (count($elements) > 0)
+       $this->pass('There should be an External Link on the form.', 'External Links');
+    else
+       $this->fail('There should be an External Link on the form.', 'External Links');
   }
 }
 
@@ -67,11 +86,12 @@ class ExtlinkAdminTestCase extends ExtlinkBaseWebTestCase {
     $this->drupalLogin($this->normal_user);
     $this->drupalGet(self::EXTLINK_ADMIN_PATH);
     file_put_contents('tmp.simpletest.html', $this->drupalGetContent());
-    $this->assertText(t('Access denied'), 'Normal users should not be able to access the CAPTCHA admin pages', 'CAPTCHA');
+    $this->assertText(t('Access denied'), 'Normal users should not be able to access the External Links admin pages', 'External Links');
 
     $this->drupalLogin($this->admin_user);
     $this->drupalGet(self::EXTLINK_ADMIN_PATH);
-    $this->assertNoText(t('Access denied'), 'Admin users should be able to access the CAPTCHA admin pages', 'CAPTCHA');
+    file_put_contents('tmp.simpletest.html', $this->drupalGetContent());
+    $this->assertNoText(t('Access denied'), 'Admin users should be able to access the External Links admin pages', 'External Links');
   }
 }
 ?>

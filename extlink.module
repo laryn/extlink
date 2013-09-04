@@ -72,10 +72,10 @@ function extlink_admin_settings() {
   $form['extlink_target_value'] = array(
     '#type' => 'textarea',
     '#title' => t('Target value for new window'),
-	'#rows' => 1,
+    '#rows' => 1,
     '#default_value' => variable_get('extlink_target_value', '_blank'),
-	'#wysiwyg' => FALSE,
-	'#states' => array(
+    '#wysiwyg' => FALSE,
+    '#states' => array(
       // Only show this field when user opts to open in new window.
       'visible' => array(
         ':input[name="extlink_target"]' => array('checked' => TRUE),
