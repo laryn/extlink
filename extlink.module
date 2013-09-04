@@ -23,8 +23,9 @@ function extlink_page_build() {
   drupal_add_js($path .'/extlink.js', array('every_page' => TRUE));
   drupal_add_js(array('extlink' => array(
     'extTarget'     => variable_get('extlink_target', 0),
-	'extTargetValue'=> variable_get('extlink_target_value', ''),
+    'extTargetValue'=> variable_get('extlink_target_value', ''),
     'extClass'      => variable_get('extlink_class', 'ext'),
+    'extImgClass'   => variable_get('extlink_img_class', 0),
     'extSubdomains' => variable_get('extlink_subdomains', 1),
     'extExclude'    => variable_get('extlink_exclude', ''),
     'extInclude'    => variable_get('extlink_include', ''),
@@ -53,6 +54,14 @@ function extlink_admin_settings() {
     '#return_value' => 'mailto',
     '#default_value' => variable_get('extlink_mailto_class', 'mailto'),
     '#description' => t('Places an !icon icon next to mailto links.', array('!icon' => theme('image',array('path' => drupal_get_path('module', 'extlink') . '/mailto.png', 'alt' => t('Email links icon'))))),
+  );
+
+  $form['extlink_img_class'] = array(
+    '#type' => 'checkbox',
+    '#title' => t('Place an icon next to image links'),
+    '#return_value' => TRUE,
+    '#default_value' => variable_get('extlink_img_class', FALSE),
+    '#description' => t('If checked, images wrapped in an anchor tag will be treated as external links.'),
   );
 
   $form['extlink_subdomains'] = array(

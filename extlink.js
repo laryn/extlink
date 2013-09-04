@@ -125,12 +125,16 @@ Drupal.extlink.attach = function (context, settings) {
  */
 Drupal.extlink.applyClassAndSpan = function (links, class_name) {
   var $links_to_process;
-  if (parseFloat($().jquery) < 1.2) {
-    $links_to_process = $(links).not('[img]');
-  }
-  else {
-    var links_with_images = $(links).find('img').parents('a');
-    $links_to_process = $(links).not(links_with_images);
+  if(Drupal.settings.extlink.extImgClass){
+    $links_to_process = $(links);
+  }else {
+    if (parseFloat($().jquery) < 1.2) {
+      $links_to_process = $(links).not('[img]');
+    }
+    else {
+      var links_with_images = $(links).find('img').parents('a');
+      $links_to_process = $(links).not(links_with_images);
+    }
   }
   $links_to_process.addClass(class_name);
   var i;
