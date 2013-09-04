@@ -138,7 +138,11 @@ Drupal.extlink.applyClassAndSpan = function (links, class_name) {
   for (i = 0; i < length; i++) {
     var $link = $($links_to_process[i]);
     if ($link.css('display') == 'inline') {
-      $link.after('<span class=' + class_name + '></span>');
+      if (class_name == Drupal.settings.extlink.mailtoClass) {
+        $link.after('<span class=' + class_name + '><div class="element-invisible">' + Drupal.t('Email links icon') + '</div></span>');
+      }else {
+        $link.after('<span class=' + class_name + '><div class="element-invisible">' + Drupal.t('External Links icon') + '</div></span>');
+      }
     }
   }
 };
