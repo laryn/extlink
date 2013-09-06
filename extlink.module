@@ -50,7 +50,7 @@ function extlink_admin_settings() {
 
   $form['extlink_mailto_class'] = array(
     '#type' => 'checkbox',
-    '#title' => t('Place an icon next to mailto links'),
+    '#title' => t('Place an icon next to mailto links.'),
     '#return_value' => 'mailto',
     '#default_value' => variable_get('extlink_mailto_class', 'mailto'),
     '#description' => t('Places an !icon icon next to mailto links.', array('!icon' => theme('image',array('path' => drupal_get_path('module', 'extlink') . '/mailto.png', 'alt' => t('Email links icon'))))),
@@ -58,7 +58,7 @@ function extlink_admin_settings() {
 
   $form['extlink_img_class'] = array(
     '#type' => 'checkbox',
-    '#title' => t('Place an icon next to image links'),
+    '#title' => t('Place an icon next to image links.'),
     '#return_value' => TRUE,
     '#default_value' => variable_get('extlink_img_class', FALSE),
     '#description' => t('If checked, images wrapped in an anchor tag will be treated as external links.'),
@@ -73,14 +73,14 @@ function extlink_admin_settings() {
 
   $form['extlink_target'] = array(
     '#type' => 'checkbox',
-    '#title' => t('Open external links in a new window'),
+    '#title' => t('Open external links in a new window.'),
     '#return_value' => '_blank',
     '#default_value' => variable_get('extlink_target', 0),
   );
   
   $form['extlink_target_value'] = array(
     '#type' => 'textarea',
-    '#title' => t('Target value for new window'),
+    '#title' => t('Target value for new window.'),
     '#rows' => 1,
     '#default_value' => variable_get('extlink_target_value', '_blank'),
     '#wysiwyg' => FALSE,
