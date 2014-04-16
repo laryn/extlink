@@ -26,13 +26,13 @@ Drupal.extlink.attach = function (context, settings) {
   // Extra internal link matching.
   var extInclude = false;
   if (settings.extlink.extInclude) {
-    extInclude = new RegExp(settings.extlink.extInclude.replace(/\\/, '\\'));
+    extInclude = new RegExp(settings.extlink.extInclude.replace(/\\/, '\\'), "i");
   }
 
   // Extra external link matching.
   var extExclude = false;
   if (settings.extlink.extExclude) {
-    extExclude = new RegExp(settings.extlink.extExclude.replace(/\\/, '\\'));
+    extExclude = new RegExp(settings.extlink.extExclude.replace(/\\/, '\\'), "i");
   }
 
   // Extra external link CSS selector exclusion.
