@@ -108,11 +108,6 @@ Drupal.extlink.attach = function (context, settings) {
   $(external_links).click(function(e) {
     return Drupal.extlink.popupClickHandler(e);
   });
-
-  // Work around for Internet Explorer box model problems.
-  if (($.support && !($.support.boxModel === undefined) && !$.support.boxModel) || ($.browser.msie && parseInt($.browser.version) <= 7)) {
-    $('span.ext, span.mailto').css('display', 'inline-block');
-  }
 };
 
 /**
