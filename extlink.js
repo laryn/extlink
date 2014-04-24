@@ -3,6 +3,10 @@
 Drupal.extlink = Drupal.extlink || {};
 
 Drupal.extlink.attach = function (context, settings) {
+  if (!settings.hasOwnProperty('extlink')) {
+    return;
+  }
+
   // Strip the host name down, removing ports, subdomains, or www.
   var pattern = /^(([^\/:]+?\.)*)([^\.:]{4,})((\.[a-z]{1,4})*)(:[0-9]{1,5})?$/;
   var host = window.location.host.replace(pattern, '$3$4');
