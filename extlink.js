@@ -123,13 +123,7 @@ Drupal.extlink.applyClassAndSpan = function (links, class_name) {
     $links_to_process = $(links);
   }
   else {
-    if (parseFloat($().jquery) < 1.2) {
-      $links_to_process = $(links).not('[img]');
-    }
-    else {
-      var links_with_images = $(links).find('img').parents('a');
-      $links_to_process = $(links).not(links_with_images);
-    }
+    $links_to_process = $(links).not('[img]');
   }
   $links_to_process.addClass(class_name);
   var i;
@@ -138,9 +132,10 @@ Drupal.extlink.applyClassAndSpan = function (links, class_name) {
     var $link = $($links_to_process[i]);
     if ($link.css('display') == 'inline' || $link.css('display') == 'inline-block') {
       if (class_name == Drupal.settings.extlink.mailtoClass) {
-        $link.after('<span class=' + class_name + '><div class="element-invisible">' + Drupal.t('Email links icon') + '</div></span>');
-      }else {
-        $link.after('<span class=' + class_name + '><div class="element-invisible">' + Drupal.t('External Links icon') + '</div></span>');
+        $link.append('<span class="' + class_name + '"><span class="element-invisible"> ' + Drupal.settings.extlink.mailtoLabel + '</span></span>');
+      }
+      else {
+        $link.append('<span class="' + class_name + '"><span class="element-invisible"> ' + Drupal.settings.extlink.extLabel + '</span></span>');
       }
     }
   }

@@ -24,6 +24,7 @@ function extlink_page_build() {
   drupal_add_js(array('extlink' => array(
     'extTarget'     => variable_get('extlink_target', 0),
     'extClass'      => variable_get('extlink_class', 'ext'),
+    'extLabel'      => check_plain(variable_get('extlink_label', t('(link is external)'))),
     'extImgClass'   => variable_get('extlink_img_class', 0),
     'extSubdomains' => variable_get('extlink_subdomains', 1),
     'extExclude'    => variable_get('extlink_exclude', ''),
@@ -32,8 +33,9 @@ function extlink_page_build() {
     'extCssExplicit' => variable_get('extlink_css_explicit', ''),
     'extAlert'      => variable_get('extlink_alert', 0),
     'extAlertText'  => variable_get('extlink_alert_text', 'This link will take you to an external web site. We are not responsible for their content.'),
-    'mailtoClass'   => variable_get('extlink_mailto_class', 'mailto'))), 'setting'
-  );
+    'mailtoClass'   => variable_get('extlink_mailto_class', 'mailto'),
+    'mailtoLabel'   => check_plain(variable_get('extlink_mailto_label', t('(link sends e-mail)'))),
+  )), 'setting');
 }
 
 function extlink_admin_settings() {
