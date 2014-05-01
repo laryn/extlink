@@ -92,7 +92,7 @@ Drupal.extlink.attach = function (context, settings) {
 
   if (settings.extlink.extTarget) {
     // Apply the target attribute to all links.
-    $(external_links).attr('target', settings.extlink.extTargetValue);
+    $(external_links).attr('target', settings.extlink.extTarget);
   }
 
   Drupal.extlink = Drupal.extlink || {};
@@ -120,9 +120,10 @@ Drupal.extlink.attach = function (context, settings) {
  */
 Drupal.extlink.applyClassAndSpan = function (links, class_name) {
   var $links_to_process;
-  if(Drupal.settings.extlink.extImgClass){
+  if (Drupal.settings.extlink.extImgClass){
     $links_to_process = $(links);
-  }else {
+  }
+  else {
     if (parseFloat($().jquery) < 1.2) {
       $links_to_process = $(links).not('[img]');
     }
