@@ -59,8 +59,7 @@ Drupal.extlink.attach = function (context, settings) {
     try {
       var url = this.href.toLowerCase();
       if (url.indexOf('http') == 0
-        && (!url.match(internal_link) && !(extExclude && url.match(extExclude)))
-        || (extInclude && url.match(extInclude))
+        && ((!url.match(internal_link) && !(extExclude && url.match(extExclude))) || (extInclude && url.match(extInclude)))
         && !(extCssExclude && $(this).parents(extCssExclude).length > 0)
         && !(extCssExplicit && $(this).parents(extCssExplicit).length < 1)) {
         external_links.push(this);
