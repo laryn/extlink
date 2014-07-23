@@ -30,13 +30,13 @@ Drupal.extlink.attach = function (context, settings) {
   // Extra internal link matching.
   var extInclude = false;
   if (settings.extlink.extInclude) {
-    extInclude = new RegExp(settings.extlink.extInclude.replace(/\\/, '\\'));
+    extInclude = new RegExp(settings.extlink.extInclude.replace(/\\/, '\\'), "i");
   }
 
   // Extra external link matching.
   var extExclude = false;
   if (settings.extlink.extExclude) {
-    extExclude = new RegExp(settings.extlink.extExclude.replace(/\\/, '\\'));
+    extExclude = new RegExp(settings.extlink.extExclude.replace(/\\/, '\\'), "i");
   }
 
   // Extra external link CSS selector exclusion.
@@ -63,8 +63,7 @@ Drupal.extlink.attach = function (context, settings) {
     try {
       var url = this.href.toLowerCase();
       if (url.indexOf('http') == 0
-        && (!url.match(internal_link) && !(extExclude && url.match(extExclude)))
-        || (extInclude && url.match(extInclude))
+        && ((!url.match(internal_link) && !(extExclude && url.match(extExclude))) || (extInclude && url.match(extInclude)))
         && !(extCssExclude && $(this).parents(extCssExclude).length > 0)
         && !(extCssExplicit && $(this).parents(extCssExplicit).length < 1)) {
         external_links.push(this);
@@ -96,7 +95,7 @@ Drupal.extlink.attach = function (context, settings) {
 
   if (settings.extlink.extTarget) {
     // Apply the target attribute to all links.
-    $(external_links).attr('target', settings.extlink.extTargetValue);
+    $(external_links).attr('target', settings.extlink.extTarget);
   }
 
   Drupal.extlink = Drupal.extlink || {};
@@ -112,11 +111,6 @@ Drupal.extlink.attach = function (context, settings) {
   $(external_links).click(function(e) {
     return Drupal.extlink.popupClickHandler(e);
   });
-
-  // Work around for Internet Explorer box model problems.
-  if (($.support && !($.support.boxModel === undefined) && !$.support.boxModel) || ($.browser.msie && parseInt($.browser.version) <= 7)) {
-    $('span.ext, span.mailto').css('display', 'inline-block');
-  }
 };
 
 /**
@@ -129,16 +123,11 @@ Drupal.extlink.attach = function (context, settings) {
  */
 Drupal.extlink.applyClassAndSpan = function (links, class_name) {
   var $links_to_process;
-  if(Drupal.settings.extlink.extImgClass){
+  if (Drupal.settings.extlink.extImgClass){
     $links_to_process = $(links);
-  }else {
-    if (parseFloat($().jquery) < 1.2) {
-      $links_to_process = $(links).not('[img]');
-    }
-    else {
-      var links_with_images = $(links).find('img').parents('a');
-      $links_to_process = $(links).not(links_with_images);
-    }
+  }
+  else {
+    $links_to_process = $(links).not('[img]');
   }
   $links_to_process.addClass(class_name);
   var i;
@@ -147,9 +136,10 @@ Drupal.extlink.applyClassAndSpan = function (links, class_name) {
     var $link = $($links_to_process[i]);
     if ($link.css('display') == 'inline' || $link.css('display') == 'inline-block') {
       if (class_name == Drupal.settings.extlink.mailtoClass) {
-        $link.after('<span class=' + class_name + '><div class="element-invisible">' + Drupal.t('Email links icon') + '</div></span>');
-      }else {
-        $link.after('<span class=' + class_name + '><div class="element-invisible">' + Drupal.t('External Links icon') + '</div></span>');
+        $link.append('<span class="' + class_name + '"><span class="element-invisible"> ' + Drupal.settings.extlink.mailtoLabel + '</span></span>');
+      }
+      else {
+        $link.append('<span class="' + class_name + '"><span class="element-invisible"> ' + Drupal.settings.extlink.extLabel + '</span></span>');
       }
     }
   }
