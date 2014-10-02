@@ -25,7 +25,7 @@ Drupal.extlink.attach = function (context, settings) {
   }
 
   // Build regular expressions that define an internal link.
-  var internal_link = new RegExp("^https?://" + subdomains + host, "i");
+  var internal_link = new RegExp("^https?://([^@]*@)?" + subdomains + host, "i");
 
   // Extra internal link matching.
   var extInclude = false;
