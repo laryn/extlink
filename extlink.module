@@ -26,6 +26,7 @@ function extlink_page_build() {
     'extClass'      => variable_get('extlink_class', 'ext'),
     'extLabel'      => check_plain(variable_get('extlink_label', t('(link is external)'))),
     'extImgClass'   => variable_get('extlink_img_class', 0),
+    'extIconPlacement' => variable_get('extlink_icon_placement', 'append'),
     'extSubdomains' => variable_get('extlink_subdomains', 1),
     'extExclude'    => variable_get('extlink_exclude', ''),
     'extInclude'    => variable_get('extlink_include', ''),
@@ -63,6 +64,14 @@ function extlink_admin_settings() {
     '#return_value' => TRUE,
     '#default_value' => variable_get('extlink_img_class', FALSE),
     '#description' => t('If checked, images wrapped in an anchor tag will be treated as external links.'),
+  );
+
+  $form['extlink_icon_placement'] = array(
+    '#type' => 'checkbox',
+    '#title' => t('Add icon in front of any processed link'),
+    '#return_value' => 'prepend',
+    '#default_value' => variable_get('extlink_icon_placement', 'append'),
+    '#description' => t('If checked, the icon will be placed in front of any external link, otherwise it will be placed behind it.'),
   );
 
   $form['extlink_subdomains'] = array(

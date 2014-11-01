@@ -51,6 +51,9 @@ Drupal.extlink.attach = function (context, settings) {
     extCssExplicit = settings.extlink.extCssExplicit;
   }
 
+  // Define the jQuery method (either 'append' or 'prepend') of placing the icon, defaults to 'append'
+  var extIconPlacement = settings.extlink.extIconPlacement || 'append';
+
   // Find all links which are NOT internal and begin with http as opposed
   // to ftp://, javascript:, etc. other kinds of links.
   // When operating on the 'this' variable, the host has been appended to
@@ -86,11 +89,11 @@ Drupal.extlink.attach = function (context, settings) {
   });
 
   if (settings.extlink.extClass) {
-    Drupal.extlink.applyClassAndSpan(external_links, settings.extlink.extClass);
+    Drupal.extlink.applyClassAndSpan(external_links, settings.extlink.extClass, extIconPlacement);
   }
 
   if (settings.extlink.mailtoClass) {
-    Drupal.extlink.applyClassAndSpan(mailto_links, settings.extlink.mailtoClass);
+    Drupal.extlink.applyClassAndSpan(mailto_links, settings.extlink.mailtoClass, extIconPlacement);
   }
 
   if (settings.extlink.extTarget) {
@@ -120,8 +123,10 @@ Drupal.extlink.attach = function (context, settings) {
  *   An array of DOM elements representing the links.
  * @param class_name
  *   The class to apply to the links.
+ * @param icon_placement
+ *   'append' or 'prepend' the icon to the link.
  */
-Drupal.extlink.applyClassAndSpan = function (links, class_name) {
+Drupal.extlink.applyClassAndSpan = function (links, class_name, icon_placement) {
   var $links_to_process;
   if (Drupal.settings.extlink.extImgClass){
     $links_to_process = $(links);
@@ -137,10 +142,10 @@ Drupal.extlink.applyClassAndSpan = function (links, class_name) {
     var $link = $($links_to_process[i]);
     if ($link.css('display') == 'inline' || $link.css('display') == 'inline-block') {
       if (class_name == Drupal.settings.extlink.mailtoClass) {
-        $link.append('<span class="' + class_name + '"><span class="element-invisible"> ' + Drupal.settings.extlink.mailtoLabel + '</span></span>');
+        $link[icon_placement]('<span class="' + class_name + '"><span class="element-invisible"> ' + Drupal.settings.extlink.mailtoLabel + '</span></span>');
       }
       else {
-        $link.append('<span class="' + class_name + '"><span class="element-invisible"> ' + Drupal.settings.extlink.extLabel + '</span></span>');
+        $link[icon_placement]('<span class="' + class_name + '"><span class="element-invisible"> ' + Drupal.settings.extlink.extLabel + '</span></span>');
       }
     }
   }
