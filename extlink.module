@@ -7,7 +7,7 @@ function extlink_menu() {
   $items['admin/config/user-interface/extlink'] = array(
     'title' => 'External links',
     'description' => 'Alter the display of external links on the site.',
-    'page callback' => 'drupal_get_form',
+    'page callback' => 'backdrop_get_form',
     'page arguments' => array('extlink_admin_settings'),
     'access callback' => 'user_access',
     'access arguments' => array('administer site configuration'),
@@ -16,53 +16,66 @@ function extlink_menu() {
 }
 
 /**
- * Implements hook_page_build().
+ * Implements hook_preprocess_page().
  */
-function extlink_page_build() {
-  $path = drupal_get_path('module', 'extlink');
-  drupal_add_js($path .'/extlink.js', array('every_page' => TRUE));
-  drupal_add_js(array('extlink' => array(
-    'extTarget'     => variable_get('extlink_target', 0),
-    'extClass'      => variable_get('extlink_class', 'ext'),
-    'extLabel'      => check_plain(variable_get('extlink_label', t('(link is external)'))),
-    'extImgClass'   => variable_get('extlink_img_class', 0),
-    'extIconPlacement' => variable_get('extlink_icon_placement', 'append'),
-    'extSubdomains' => variable_get('extlink_subdomains', 1),
-    'extExclude'    => variable_get('extlink_exclude', ''),
-    'extInclude'    => variable_get('extlink_include', ''),
-    'extCssExclude' => variable_get('extlink_css_exclude', ''),
-    'extCssExplicit' => variable_get('extlink_css_explicit', ''),
-    'extAlert'      => variable_get('extlink_alert', 0),
-    'extAlertText'  => variable_get('extlink_alert_text', 'This link will take you to an external web site. We are not responsible for their content.'),
-    'mailtoClass'   => variable_get('extlink_mailto_class', 'mailto'),
-    'mailtoLabel'   => check_plain(variable_get('extlink_mailto_label', t('(link sends e-mail)'))),
+function extlink_preprocess_page(&$variables) {
+  $path = backdrop_get_path('module', 'extlink');
+  $config = config('extlink.settings');
+  backdrop_add_js($path .'/extlink.js', array('every_page' => TRUE));
+  backdrop_add_js(array('extlink' => array(
+    'extTarget'     => $config->get('target'),
+    'extClass'      => $config->get('class'),
+    'extLabel'      => check_plain(t($config->get('label'))),
+    'extImgClass'   => $config->get('img_class'),
+    'extIconPlacement' => $config->get('icon_placement'),
+    'extSubdomains' => $config->get('subdomains'),
+    'extExclude'    => $config->get('exclude'),
+    'extInclude'    => $config->get('include'),
+    'extCssExclude' => $config->get('css_exclude'),
+    'extCssExplicit' => $config->get('css_explicit'),
+    'extAlert'      => $config->get('alert'),
+    'extAlertText'  => $config->get('alert_text'),
+    'mailtoClass'   => $config->get('mailto_class'),
+    'mailtoLabel'   => check_plain(t($config->get('mailto_label'))),
   )), 'setting');
+}
+
+/**
+ * Implements hook_config_info().
+ */
+function extlink_config_info() {
+  $prefixes['extlink.settings'] = array(
+    'label' => t('External links settings'),
+    'group' => t('Configuration'),
+  );
+  return $prefixes;
 }
 
 function extlink_admin_settings() {
   $form = array();
+  $config = config('extlink.settings');
 
   $form['extlink_class'] = array(
     '#type' => 'checkbox',
     '#title' => t('Place an icon next to external links.'),
     '#return_value' => 'ext',
-    '#default_value' => variable_get('extlink_class', 'ext'),
-    '#description' => t('Places an !icon icon next to external links.', array('!icon' => theme('image', array('path' => drupal_get_path('module', 'extlink') . '/extlink.png', 'alt' => t('External Links icon'))))),
+    '#default_value' => $config->get('class'),
+    '#description' => t('Places an !icon icon next to external links.', array('!icon' => theme('image', array('path' => backdrop_get_path('module', 'extlink') . '/extlink.png', 'alt' => t('External Links icon'))))),
   );
 
   $form['extlink_mailto_class'] = array(
     '#type' => 'checkbox',
     '#title' => t('Place an icon next to mailto links.'),
     '#return_value' => 'mailto',
-    '#default_value' => variable_get('extlink_mailto_class', 'mailto'),
-    '#description' => t('Places an !icon icon next to mailto links.', array('!icon' => theme('image',array('path' => drupal_get_path('module', 'extlink') . '/mailto.png', 'alt' => t('Email links icon'))))),
+    '#default_value' => $config->get('mailto_class'),
+    '#description' => t('Places an !icon icon next to mailto links.', array('!icon' => theme('image',array('path' => backdrop_get_path('module', 'extlink') . '/mailto.png', 'alt' => t('Email links icon'))))),
   );
 
   $form['extlink_img_class'] = array(
     '#type' => 'checkbox',
     '#title' => t('Place an icon next to image links.'),
     '#return_value' => TRUE,
-    '#default_value' => variable_get('extlink_img_class', FALSE),
+    '#default_value' => $config->get('img_class'),
     '#description' => t('If checked, images wrapped in an anchor tag will be treated as external links.'),
   );
 
@@ -70,14 +83,14 @@ function extlink_admin_settings() {
     '#type' => 'checkbox',
     '#title' => t('Add icon in front of any processed link'),
     '#return_value' => 'prepend',
-    '#default_value' => variable_get('extlink_icon_placement', 'append'),
+    '#default_value' => $config->get('icon_placement'),
     '#description' => t('If checked, the icon will be placed in front of any external link, otherwise it will be placed behind it.'),
   );
 
   $form['extlink_subdomains'] = array(
     '#type' => 'checkbox',
     '#title' => t('Exclude links with the same primary domain.'),
-    '#default_value' => variable_get('extlink_subdomains', 1),
+    '#default_value' => $config->get('subdomains'),
     '#description' => t("For example, a link from 'www.example.com' to the subdomain of 'my.example.com' would be excluded."),
   );
 
@@ -85,21 +98,21 @@ function extlink_admin_settings() {
     '#type' => 'checkbox',
     '#title' => t('Open external links in a new window.'),
     '#return_value' => '_blank',
-    '#default_value' => variable_get('extlink_target', 0),
+    '#default_value' => $config->get('target'),
   );
 
   $form['extlink_alert'] = array(
     '#type' => 'checkbox',
     '#title' => t('Display a pop-up warning when any external link is clicked.'),
     '#return_value' => '_blank',
-    '#default_value' => variable_get('extlink_alert', 0),
+    '#default_value' => $config->get('alert'),
   );
 
   $form['extlink_alert_text'] = array(
     '#type' => 'textarea',
     '#title' => t('Text to display in the pop-up warning box.'),
     '#rows' => 3,
-    '#default_value' => variable_get('extlink_alert_text', 'This link will take you to an external web site.'),
+    '#default_value' => $config->get('alert_text'),
     '#wysiwyg' => FALSE,
     '#states' => array(
       // Only show this field when user opts to display a pop-up warning.
@@ -141,7 +154,7 @@ function extlink_admin_settings() {
     '#type' => 'textfield',
     '#title' => t('Exclude links matching the pattern'),
     '#maxlength' => NULL,
-    '#default_value' => variable_get('extlink_exclude', ''),
+    '#default_value' => $config->get('exclude'),
     '#description' => t('Enter a regular expression for links that you wish to exclude from being considered external.'),
   );
 
@@ -149,7 +162,7 @@ function extlink_admin_settings() {
     '#type' => 'textfield',
     '#title' => t('Include links matching the pattern'),
     '#maxlength' => NULL,
-    '#default_value' => variable_get('extlink_include', ''),
+    '#default_value' => $config->get('include'),
     '#description' => t('Enter a regular expression for internal links that you wish to be considered external.'),
   );
 
@@ -167,7 +180,7 @@ function extlink_admin_settings() {
     '#type' => 'textarea',
     '#title' => t('Exclude links inside these CSS selectors'),
     '#maxlength' => NULL,
-    '#default_value' => variable_get('extlink_css_exclude', ''),
+    '#default_value' => $config->get('css_exclude'),
     '#description' => t('Enter a comma-separated list of CSS selectors (ie "#block-block-2 .content, ul.menu")'),
   );
 
@@ -175,11 +188,17 @@ function extlink_admin_settings() {
     '#type' => 'textarea',
     '#title' => t('Only look for links inside these CSS selectors'),
     '#maxlength' => NULL,
-    '#default_value' => variable_get('extlink_css_explicit', ''),
+    '#default_value' => $config->get('css_explicit'),
     '#description' => t('Enter a comma-separated list of CSS selectors (ie "#block-block-2 .content, ul.menu")'),
   );
 
-  return system_settings_form($form);
+  $form['actions']['#type'] = 'actions';
+  $form['actions']['submit'] = array(
+    '#type' => 'submit',
+    '#value' => t('Save configuration'),
+  );
+
+  return $form;
 }
 
 function extlink_admin_settings_validate($form, &$form_state) {
@@ -190,7 +209,6 @@ function extlink_admin_settings_validate($form, &$form_state) {
     // If the regex returns NULL, then throw an error and reset the variable
     if ($regexeval === NULL) {
       form_set_error('extlink_exclude', t('Invalid regular expression.'));
-      variable_set('extlink_exclude', '');
     }
   }
   // Check if the include pattern is a valid regular expression
@@ -200,7 +218,24 @@ function extlink_admin_settings_validate($form, &$form_state) {
     // If the regex returns NULL, then throw an error and reset the variable
     if ($regexeval === NULL) {
       form_set_error('extlink_include', t('Invalid regular expression.'));
-      variable_set('extlink_include', '');
     }
   }
+}
+
+function extlink_admin_settings_submit($form, &$form_state) {
+  $values = $form_state['values'];
+  $config = config('extlink.settings');
+  $config->set('class', $values['extlink_class'] ? $values['extlink_class'] : FALSE);
+  $config->set('mailto_class', $values['extlink_mailto_class'] ? $values['extlink_mailto_class'] : FALSE);
+  $config->set('img_class', $values['extlink_img_class'] ? $values['extlink_img_class'] : FALSE);
+  $config->set('subdomains', (bool) $values['extlink_subdomains']);
+  $config->set('target', $values['extlink_target'] ? $values['extlink_target'] : '');
+  $config->set('alert', (bool) $values['extlink_alert']);
+  $config->set('alert_text', $values['extlink_alert_text']);
+  $config->set('exclude', $values['extlink_exclude']);
+  $config->set('include', $values['extlink_include']);
+  $config->set('css_exclude', $values['extlink_css_exclude']);
+  $config->set('css_explicit', $values['extlink_css_explicit']);
+  $config->save();
+  backdrop_set_message(t('Configuration options saved.'));
 }

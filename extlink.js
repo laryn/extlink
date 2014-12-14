@@ -1,8 +1,8 @@
 (function ($) {
 
-Drupal.extlink = Drupal.extlink || {};
+Backdrop.extlink = Backdrop.extlink || {};
 
-Drupal.extlink.attach = function (context, settings) {
+Backdrop.extlink.attach = function (context, settings) {
   if (!settings.hasOwnProperty('extlink')) {
     return;
   }
@@ -59,7 +59,7 @@ Drupal.extlink.attach = function (context, settings) {
   // When operating on the 'this' variable, the host has been appended to
   // all links by the browser, even local ones.
   // In jQuery 1.1 and higher, we'd use a filter method here, but it is not
-  // available in jQuery 1.0 (Drupal 5 default).
+  // available in jQuery 1.0 (Backdrop 5 default).
   var external_links = new Array();
   var mailto_links = new Array();
   $("a:not(." + settings.extlink.extClass + ", ." + settings.extlink.mailtoClass + "), area:not(." + settings.extlink.extClass + ", ." + settings.extlink.mailtoClass + ")", context).each(function(el) {
@@ -89,11 +89,11 @@ Drupal.extlink.attach = function (context, settings) {
   });
 
   if (settings.extlink.extClass) {
-    Drupal.extlink.applyClassAndSpan(external_links, settings.extlink.extClass, extIconPlacement);
+    Backdrop.extlink.applyClassAndSpan(external_links, settings.extlink.extClass, extIconPlacement);
   }
 
   if (settings.extlink.mailtoClass) {
-    Drupal.extlink.applyClassAndSpan(mailto_links, settings.extlink.mailtoClass, extIconPlacement);
+    Backdrop.extlink.applyClassAndSpan(mailto_links, settings.extlink.mailtoClass, extIconPlacement);
   }
 
   if (settings.extlink.extTarget) {
@@ -101,18 +101,18 @@ Drupal.extlink.attach = function (context, settings) {
     $(external_links).attr('target', settings.extlink.extTarget);
   }
 
-  Drupal.extlink = Drupal.extlink || {};
+  Backdrop.extlink = Backdrop.extlink || {};
 
   // Set up default click function for the external links popup. This should be
   // overridden by modules wanting to alter the popup.
-  Drupal.extlink.popupClickHandler = Drupal.extlink.popupClickHandler || function() {
+  Backdrop.extlink.popupClickHandler = Backdrop.extlink.popupClickHandler || function() {
     if (settings.extlink.extAlert) {
       return confirm(settings.extlink.extAlertText);
     }
    }
 
   $(external_links).click(function(e) {
-    return Drupal.extlink.popupClickHandler(e);
+    return Backdrop.extlink.popupClickHandler(e);
   });
 };
 
@@ -126,9 +126,9 @@ Drupal.extlink.attach = function (context, settings) {
  * @param icon_placement
  *   'append' or 'prepend' the icon to the link.
  */
-Drupal.extlink.applyClassAndSpan = function (links, class_name, icon_placement) {
+Backdrop.extlink.applyClassAndSpan = function (links, class_name, icon_placement) {
   var $links_to_process;
-  if (Drupal.settings.extlink.extImgClass){
+  if (Backdrop.settings.extlink.extImgClass){
     $links_to_process = $(links);
   }
   else {
@@ -141,25 +141,25 @@ Drupal.extlink.applyClassAndSpan = function (links, class_name, icon_placement) 
   for (i = 0; i < length; i++) {
     var $link = $($links_to_process[i]);
     if ($link.css('display') == 'inline' || $link.css('display') == 'inline-block') {
-      if (class_name == Drupal.settings.extlink.mailtoClass) {
-        $link[icon_placement]('<span class="' + class_name + '"><span class="element-invisible"> ' + Drupal.settings.extlink.mailtoLabel + '</span></span>');
+      if (class_name == Backdrop.settings.extlink.mailtoClass) {
+        $link[icon_placement]('<span class="' + class_name + '"><span class="element-invisible"> ' + Backdrop.settings.extlink.mailtoLabel + '</span></span>');
       }
       else {
-        $link[icon_placement]('<span class="' + class_name + '"><span class="element-invisible"> ' + Drupal.settings.extlink.extLabel + '</span></span>');
+        $link[icon_placement]('<span class="' + class_name + '"><span class="element-invisible"> ' + Backdrop.settings.extlink.extLabel + '</span></span>');
       }
     }
   }
 };
 
-Drupal.behaviors.extlink = Drupal.behaviors.extlink || {};
-Drupal.behaviors.extlink.attach = function (context, settings) {
+Backdrop.behaviors.extlink = Backdrop.behaviors.extlink || {};
+Backdrop.behaviors.extlink.attach = function (context, settings) {
   // Backwards compatibility, for the benefit of modules overriding extlink
   // functionality by defining an "extlinkAttach" global function.
   if (typeof extlinkAttach === 'function') {
     extlinkAttach(context);
   }
   else {
-    Drupal.extlink.attach(context, settings);
+    Backdrop.extlink.attach(context, settings);
   }
 };
 

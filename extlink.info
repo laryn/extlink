@@ -1,7 +1,6 @@
 name = External Links
 description = Determine behavior and appearance for external links. Options include: Make external links open in a new window, add icons next to external links and email addresses, display pop-up warnings when users click external links.
 package = User interface
-core = 7.x
+backdrop = 1.x
 configure = admin/config/user-interface/extlink
 stylesheets[all][] = extlink.css
-files[] = extlink.test

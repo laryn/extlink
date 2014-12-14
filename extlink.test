@@ -4,21 +4,21 @@
  *
  * Provides common setup stuff and various helper functions
  */
-class ExtlinkBaseWebTestCase extends DrupalWebTestCase {
+class ExtlinkBaseWebTestCase extends BackdropWebTestCase {
   /**
    * User with various administrative permissions.
-   * @var Drupal user
+   * @var Backdrop user
    */
   protected $admin_user;
 
   /**
    * Normal visitor with limited permissions
-   * @var Drupal user;
+   * @var Backdrop user;
    */
   protected $normal_user;
   
     /**
-   * Drupal path of the (general) External Links admin page
+   * Backdrop path of the (general) External Links admin page
    */
   const EXTLINK_ADMIN_PATH = 'admin/config/user-interface/extlink';
   
@@ -31,13 +31,13 @@ class ExtlinkBaseWebTestCase extends DrupalWebTestCase {
       'access comments', 'post comments', 'skip comment approval',
       'access content', 'create page content', 'edit own page content',
     );
-    $this->normal_user = $this->drupalCreateUser($permissions);
+    $this->normal_user = $this->backdropCreateUser($permissions);
 
     // Create an admin user.
     $permissions[] = 'administer site configuration';
     $permissions[] = 'administer permissions';
     $permissions[] = 'administer content types';
-    $this->admin_user = $this->drupalCreateUser($permissions);
+    $this->admin_user = $this->backdropCreateUser($permissions);
   }
   
   protected function getNodeFormValues() {
@@ -60,37 +60,19 @@ class ExtlinkBaseWebTestCase extends DrupalWebTestCase {
   }
 }
 
-class ExtlinkTestCase extends ExtlinkBaseWebTestCase {
-  public static function getInfo() {
-    return array(
-      'name' => t('General External Links functionality'),
-      'description' => t('Testing the basic functionality of External Links'),
-      'group' => t('External Links'),
-    );
-  }
-}
-
 class ExtlinkAdminTestCase extends ExtlinkBaseWebTestCase {
-  public static function getInfo() {
-    return array(
-      'name' => t('External Links administration functionality'),
-      'description' => t('Testing of the External Links administration interface and functionality.'),
-      'group' => t('External Links'),
-    );
-  }
-
   /**
    * Test access to the admin pages.
    */
   function testAdminAccess() {
-    $this->drupalLogin($this->normal_user);
-    $this->drupalGet(self::EXTLINK_ADMIN_PATH);
-    file_put_contents('tmp.simpletest.html', $this->drupalGetContent());
+    $this->backdropLogin($this->normal_user);
+    $this->backdropGet(self::EXTLINK_ADMIN_PATH);
+    file_put_contents('tmp.simpletest.html', $this->backdropGetContent());
     $this->assertText(t('Access denied'), 'Normal users should not be able to access the External Links admin pages', 'External Links');
 
-    $this->drupalLogin($this->admin_user);
-    $this->drupalGet(self::EXTLINK_ADMIN_PATH);
-    file_put_contents('tmp.simpletest.html', $this->drupalGetContent());
+    $this->backdropLogin($this->admin_user);
+    $this->backdropGet(self::EXTLINK_ADMIN_PATH);
+    file_put_contents('tmp.simpletest.html', $this->backdropGetContent());
     $this->assertNoText(t('Access denied'), 'Admin users should be able to access the External Links admin pages', 'External Links');
   }
 }

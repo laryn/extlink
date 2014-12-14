@@ -1,0 +1,5 @@
+[ExtlinkAdminTestCase]
+name = External Links administration functionality
+description = Testing of the External Links administration interface and functionality.
+group = External Links
+file = extlink.test
