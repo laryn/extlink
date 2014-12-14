@@ -29,9 +29,11 @@ separately. To do this:
 
 1) Open the .info file for your theme, add this line of code to prevent
    the extlink.css file from loading:
-   stylesheets[all][] = extlink.css
+   `stylesheets[all][] = extlink.css`
+
 2) Open the extlink.css file within the extlink directory and copy all the code
    from the file into your theme's style.css file.
+
 3) Copy the extlink.png and mailto.png files to your theme's directory.
 
 Note that you DO NOT need to make a extlink.css file. Specifying the file in the
