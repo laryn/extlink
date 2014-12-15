@@ -12,7 +12,7 @@ function extlink_install() {
  * Convert variables from Drupal 7 to configuration.
  */
 function extlink_update_1000() {
-  $config = config('extlink');
+  $config = config('extlink.settings');
   $config->set('class', update_variable_get('extlink_class', 'ext'));
   $config->set('label', update_variable_get('extlink_label', '(link is external)'));
   $config->set('mailto_class', update_variable_get('extlink_mailto_class', 'mailto'));
