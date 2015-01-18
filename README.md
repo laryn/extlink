@@ -1,3 +1,5 @@
+External Links
+==============
 
 The External Links module is a very simple approach to adding icons to links
 to external websites or e-mail addresses. It is a purely JavaScript
@@ -7,18 +9,15 @@ enabled.
 External Links was written by Nate Haug.
 Built by Robots: http://www.lullabot.com
 
-Install
--------
+Installation
+------------
 
-Simply install External Links like you would any other module.
+- Install this module using the official Backdrop CMS instructions at
+  https://backdropcms.org/guide/modules
 
-1) Copy the extlink folder to the modules folder in your installation.
-
-2) Enable the module using Administer -> Modules (/admin/modules).
-
-3) No additional configuration is necessary though you may fine-tune settings at
-   Administer -> Configuration -> User interface -> External Links
-   (/admin/config/user-interface/extlink).
+- No additional configuration is necessary though you may fine-tune settings at
+  Administer > Configuration > User interface > External Links
+  (/admin/config/user-interface/extlink).
 
 A note about the CSS
 --------------------
@@ -38,3 +37,16 @@ separately. To do this:
 
 Note that you DO NOT need to make a extlink.css file. Specifying the file in the
 info file is enough to tell Backdrop not to load the original file.
+
+License
+-------
+
+This project is GPL v2 software. See the LICENSE.txt file in this directory for
+complete text.
+
+Maintainers
+-----------
+
+Written and maintained by:
+
+- Nate Haug (https://github.com/quicksketch/)
