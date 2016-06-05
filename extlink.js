@@ -64,7 +64,13 @@ Drupal.extlink.attach = function (context, settings) {
   var mailto_links = new Array();
   $("a:not(." + settings.extlink.extClass + ", ." + settings.extlink.mailtoClass + "), area:not(." + settings.extlink.extClass + ", ." + settings.extlink.mailtoClass + ")", context).each(function(el) {
     try {
-      var url = this.href.toLowerCase();
+      if (typeof this.href == 'string') {
+        var url = this.href.toLowerCase();
+      }
+      // Handle SVG links (xlink:href).
+      else if (typeof this.href == 'object') {
+        var url = this.href.baseVal;
+      }
       if (url.indexOf('http') == 0
         && ((!url.match(internal_link) && !(extExclude && url.match(extExclude))) || (extInclude && url.match(extInclude)))
         && !(extCssExclude && $(this).parents(extCssExclude).length > 0)
