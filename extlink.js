@@ -8,7 +8,7 @@ Drupal.extlink.attach = function (context, settings) {
   }
 
   // Strip the host name down, removing ports, subdomains, or www.
-  var pattern = /^(([^\/:]+?\.)*)([^\.:]{4,})((\.[a-z]{1,4})*)(:[0-9]{1,5})?$/;
+  var pattern = /^(([^\/:]+?\.)*)([^\.:]{1,})((\.[a-z0-9]{1,253})*)(:[0-9]{1,5})?$/;
   var host = window.location.host.replace(pattern, '$3$4');
   var subdomain = window.location.host.replace(pattern, '$1');
 
