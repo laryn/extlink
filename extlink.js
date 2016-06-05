@@ -118,7 +118,7 @@ Drupal.extlink.attach = function (context, settings) {
    }
 
   $(external_links).click(function(e) {
-    return Drupal.extlink.popupClickHandler(e);
+    return Drupal.extlink.popupClickHandler(e, this);
   });
 };
 
