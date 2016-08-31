@@ -79,8 +79,8 @@ Drupal.extlink.attach = function (context, settings) {
       }
       // Do not include area tags with begin with mailto: (this prohibits
       // icons from being added to image-maps).
-      else if (this.tagName != 'AREA' 
-        && url.indexOf('mailto:') == 0 
+      else if (this.tagName != 'AREA'
+        && url.indexOf('mailto:') == 0
         && !(extCssExclude && $(this).parents(extCssExclude).length > 0)
         && !(extCssExplicit && $(this).parents(extCssExplicit).length < 1)) {
         mailto_links.push(this);
