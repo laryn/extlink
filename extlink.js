@@ -105,6 +105,30 @@ Drupal.extlink.attach = function (context, settings) {
   if (settings.extlink.extTarget) {
     // Apply the target attribute to all links.
     $(external_links).attr('target', settings.extlink.extTarget);
+    // Add rel attributes noopener and noreferrer.
+    $(external_links).attr('rel', function (i, val) {
+      // If no rel attribute is present, create one with the values noopener and noreferrer.
+      if(val == null){
+        return "noopener nofererer";
+      }
+      // Check to see if rel contains noopener or noreferrer. Add what doesn't exist.
+      if (val.indexOf('noopener') > -1 || val.indexOf('noreferrer') > -1) {
+        if (val.indexOf('noopener') == -1) {
+          return val + " noopener";
+        }
+        if (val.indexOf('noreferrer') == -1) {
+          return val + " noreferrer";
+        }
+        // Both noopener and noreferrer exist. Nothing needs to be added.
+        else {
+          return val;
+        }
+      }
+      // Else, append noopener and noreferrer to val.
+      else {
+        return val + " noopener nofererer";
+      }
+    });
   }
 
   Drupal.extlink = Drupal.extlink || {};
