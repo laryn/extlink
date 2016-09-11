@@ -63,7 +63,7 @@ function extlink_admin_settings() {
           array(
             'path' => drupal_get_path('module', 'extlink') . '/extlink.png',
             'alt' => t('External Links icon'),
-          ),
+          )
         ),
       )),
   );
@@ -79,7 +79,7 @@ function extlink_admin_settings() {
           array(
             'path' => drupal_get_path('module', 'extlink') . '/mailto.png',
             'alt' => t('Email links icon'),
-          ),
+          )
         ),
       )),
   );
