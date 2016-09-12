@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @file
  * External Link tests.
@@ -7,19 +8,19 @@
 /**
  * Base class for External Link tests.
  *
- * Provides common setup stuff and various helper functions
+ * Provides common setup stuff and various helper functions.
  */
 class ExtlinkBaseWebTestCase extends DrupalWebTestCase {
   /**
    * User with various administrative permissions.
-   * @var Drupal user
+   * @var Drupaluser
    */
   protected $adminUser;
 
   /**
    * Normal visitor with limited permissions.
    *
-   * @var Drupal user;
+   * @var Drupaluser
    */
   protected $normalUser;
 
@@ -72,6 +73,7 @@ class ExtlinkBaseWebTestCase extends DrupalWebTestCase {
       $this->fail('There should be an External Link on the form.', 'External Links');
     }
   }
+
 }
 
 /**
@@ -88,6 +90,7 @@ class ExtlinkTestCase extends ExtlinkBaseWebTestCase {
       'group' => t('External Links'),
     );
   }
+
 }
 
 /**
@@ -119,4 +122,5 @@ class ExtlinkAdminTestCase extends ExtlinkBaseWebTestCase {
     file_put_contents('tmp.simpletest.html', $this->drupalGetContent());
     $this->assertNoText(t('Access denied'), 'Admin users should be able to access the External Links admin pages', 'External Links');
   }
+
 }

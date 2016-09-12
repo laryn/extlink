@@ -1,3 +1,7 @@
+/**
+ * @file
+ */
+ 
 (function ($) {
 
 Drupal.extlink = Drupal.extlink || {};
@@ -51,7 +55,7 @@ Drupal.extlink.attach = function (context, settings) {
     extCssExplicit = settings.extlink.extCssExplicit;
   }
 
-  // Define the jQuery method (either 'append' or 'prepend') of placing the icon, defaults to 'append'
+  // Define the jQuery method (either 'append' or 'prepend') of placing the icon, defaults to 'append'.
   var extIconPlacement = settings.extlink.extIconPlacement || 'append';
 
   // Find all links which are NOT internal and begin with http as opposed
