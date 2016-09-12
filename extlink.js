@@ -1,8 +1,10 @@
 /**
  * @file
  */
- 
+
 (function ($) {
+
+  'use strict';
 
 Drupal.extlink = Drupal.extlink || {};
 
@@ -76,7 +78,7 @@ Drupal.extlink.attach = function (context, settings) {
       else if (typeof this.href == 'object') {
         url = this.href.baseVal;
       }
-      if (url.indexOf('http') == 0
+      if (url.indexOf('http') === 0
         && ((!url.match(internal_link) && !(extExclude && url.match(extExclude))) || (extInclude && url.match(extInclude)))
         && !(extCssExclude && $(this).parents(extCssExclude).length > 0)
         && !(extCssExplicit && $(this).parents(extCssExplicit).length < 1)) {
@@ -84,8 +86,8 @@ Drupal.extlink.attach = function (context, settings) {
       }
       // Do not include area tags with begin with mailto: (this prohibits
       // icons from being added to image-maps).
-      else if (this.tagName != 'AREA'
-        && url.indexOf('mailto:') == 0
+      else if (this.tagName !== 'AREA'
+        && url.indexOf('mailto:') === 0
         && !(extCssExclude && $(this).parents(extCssExclude).length > 0)
         && !(extCssExplicit && $(this).parents(extCssExplicit).length < 1)) {
         mailto_links.push(this);
@@ -113,15 +115,15 @@ Drupal.extlink.attach = function (context, settings) {
     // Add rel attributes noopener and noreferrer.
     $(external_links).attr('rel', function (i, val) {
       // If no rel attribute is present, create one with the values noopener and noreferrer.
-      if(val == null) {
+      if (val == null) {
         return 'noopener nofererer';
       }
       // Check to see if rel contains noopener or noreferrer. Add what doesn't exist.
       if (val.indexOf('noopener') > -1 || val.indexOf('noreferrer') > -1) {
-        if (val.indexOf('noopener') == -1) {
+        if (val.indexOf('noopener') === -1) {
           return val + ' noopener';
         }
-        if (val.indexOf('noreferrer') == -1) {
+        if (val.indexOf('noreferrer') === -1) {
           return val + ' noreferrer';
         }
         // Both noopener and noreferrer exist. Nothing needs to be added.
@@ -144,7 +146,7 @@ Drupal.extlink.attach = function (context, settings) {
     if (settings.extlink.extAlert) {
       return confirm(settings.extlink.extAlertText);
     }
-   }
+   };
 
   $(external_links).click(function(e) {
     return Drupal.extlink.popupClickHandler(e, this);
