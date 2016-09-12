@@ -19,28 +19,28 @@ Drupal.extlink.attach = function (context, settings) {
   // Determine what subdomains are considered internal.
   var subdomains;
   if (settings.extlink.extSubdomains) {
-    subdomains = "([^/]*\\.)?";
+    subdomains = '([^/]*\\.)?';
   }
-  else if (subdomain == 'www.' || subdomain == '') {
-    subdomains = "(www\\.)?";
+  else if (subdomain === 'www.' || subdomain === '') {
+    subdomains = '(www\\.)?';
   }
   else {
-    subdomains = subdomain.replace(".", "\\.");
+    subdomains = subdomain.replace('.', '\\.');
   }
 
   // Build regular expressions that define an internal link.
-  var internal_link = new RegExp("^https?://([^@]*@)?" + subdomains + host, "i");
+  var internal_link = new RegExp('^https?://([^@]*@)?' + subdomains + host, 'i');
 
   // Extra internal link matching.
   var extInclude = false;
   if (settings.extlink.extInclude) {
-    extInclude = new RegExp(settings.extlink.extInclude.replace(/\\/, '\\'), "i");
+    extInclude = new RegExp(settings.extlink.extInclude.replace(/\\/, '\\'), 'i');
   }
 
   // Extra external link matching.
   var extExclude = false;
   if (settings.extlink.extExclude) {
-    extExclude = new RegExp(settings.extlink.extExclude.replace(/\\/, '\\'), "i");
+    extExclude = new RegExp(settings.extlink.extExclude.replace(/\\/, '\\'), 'i');
   }
 
   // Extra external link CSS selector exclusion.
@@ -64,16 +64,17 @@ Drupal.extlink.attach = function (context, settings) {
   // all links by the browser, even local ones.
   // In jQuery 1.1 and higher, we'd use a filter method here, but it is not
   // available in jQuery 1.0 (Drupal 5 default).
-  var external_links = new Array();
-  var mailto_links = new Array();
-  $("a:not(." + settings.extlink.extClass + ", ." + settings.extlink.mailtoClass + "), area:not(." + settings.extlink.extClass + ", ." + settings.extlink.mailtoClass + ")", context).each(function(el) {
+  var external_links = [];
+  var mailto_links = [];
+  $('a:not(.' + settings.extlink.extClass + ', .' + settings.extlink.mailtoClass + '), area:not(.' + settings.extlink.extClass + ', .' + settings.extlink.mailtoClass + ')', context).each(function(el) {
     try {
+      var url = '';
       if (typeof this.href == 'string') {
-        var url = this.href.toLowerCase();
+        url = this.href.toLowerCase();
       }
       // Handle SVG links (xlink:href).
       else if (typeof this.href == 'object') {
-        var url = this.href.baseVal;
+        url = this.href.baseVal;
       }
       if (url.indexOf('http') == 0
         && ((!url.match(internal_link) && !(extExclude && url.match(extExclude))) || (extInclude && url.match(extInclude)))
@@ -112,16 +113,16 @@ Drupal.extlink.attach = function (context, settings) {
     // Add rel attributes noopener and noreferrer.
     $(external_links).attr('rel', function (i, val) {
       // If no rel attribute is present, create one with the values noopener and noreferrer.
-      if(val == null){
-        return "noopener nofererer";
+      if(val == null) {
+        return 'noopener nofererer';
       }
       // Check to see if rel contains noopener or noreferrer. Add what doesn't exist.
       if (val.indexOf('noopener') > -1 || val.indexOf('noreferrer') > -1) {
         if (val.indexOf('noopener') == -1) {
-          return val + " noopener";
+          return val + ' noopener';
         }
         if (val.indexOf('noreferrer') == -1) {
-          return val + " noreferrer";
+          return val + ' noreferrer';
         }
         // Both noopener and noreferrer exist. Nothing needs to be added.
         else {
@@ -130,7 +131,7 @@ Drupal.extlink.attach = function (context, settings) {
       }
       // Else, append noopener and noreferrer to val.
       else {
-        return val + " noopener nofererer";
+        return val + ' noopener nofererer';
       }
     });
   }
@@ -153,16 +154,16 @@ Drupal.extlink.attach = function (context, settings) {
 /**
  * Apply a class and a trailing <span> to all links not containing images.
  *
- * @param links
+ * @param {object[]} links
  *   An array of DOM elements representing the links.
- * @param class_name
+ * @param {string} class_name
  *   The class to apply to the links.
- * @param icon_placement
+ * @param {string} icon_placement
  *   'append' or 'prepend' the icon to the link.
  */
 Drupal.extlink.applyClassAndSpan = function (links, class_name, icon_placement) {
   var $links_to_process;
-  if (Drupal.settings.extlink.extImgClass){
+  if (Drupal.settings.extlink.extImgClass) {
     $links_to_process = $(links);
   }
   else {
@@ -174,8 +175,8 @@ Drupal.extlink.applyClassAndSpan = function (links, class_name, icon_placement) 
   var length = $links_to_process.length;
   for (i = 0; i < length; i++) {
     var $link = $($links_to_process[i]);
-    if ($link.css('display') == 'inline' || $link.css('display') == 'inline-block') {
-      if (class_name == Drupal.settings.extlink.mailtoClass) {
+    if ($link.css('display') === 'inline' || $link.css('display') === 'inline-block') {
+      if (class_name === Drupal.settings.extlink.mailtoClass) {
         $link[icon_placement]('<span class="' + class_name + '"><span class="element-invisible"> ' + Drupal.settings.extlink.mailtoLabel + '</span></span>');
       }
       else {
