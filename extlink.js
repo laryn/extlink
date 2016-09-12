@@ -68,7 +68,7 @@ Drupal.extlink.attach = function (context, settings) {
   // available in jQuery 1.0 (Drupal 5 default).
   var external_links = [];
   var mailto_links = [];
-  $('a:not(.' + settings.extlink.extClass + ', .' + settings.extlink.mailtoClass + '), area:not(.' + settings.extlink.extClass + ', .' + settings.extlink.mailtoClass + ')', context).each(function(el) {
+  $('a:not(.' + settings.extlink.extClass + ', .' + settings.extlink.mailtoClass + '), area:not(.' + settings.extlink.extClass + ', .' + settings.extlink.mailtoClass + ')', context).each(function (el) {
     try {
       var url = '';
       if (typeof this.href == 'string') {
@@ -142,13 +142,13 @@ Drupal.extlink.attach = function (context, settings) {
 
   // Set up default click function for the external links popup. This should be
   // overridden by modules wanting to alter the popup.
-  Drupal.extlink.popupClickHandler = Drupal.extlink.popupClickHandler || function() {
+  Drupal.extlink.popupClickHandler = Drupal.extlink.popupClickHandler || function () {
     if (settings.extlink.extAlert) {
       return confirm(settings.extlink.extAlertText);
     }
    };
 
-  $(external_links).click(function(e) {
+  $(external_links).click(function (e) {
     return Drupal.extlink.popupClickHandler(e, this);
   });
 };

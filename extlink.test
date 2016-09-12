@@ -13,6 +13,7 @@
 class ExtlinkBaseWebTestCase extends DrupalWebTestCase {
   /**
    * User with various administrative permissions.
+   *
    * @var Drupaluser
    */
   protected $adminUser;
@@ -80,6 +81,7 @@ class ExtlinkBaseWebTestCase extends DrupalWebTestCase {
  * Test Case for General External Links functionality.
  */
 class ExtlinkTestCase extends ExtlinkBaseWebTestCase {
+
   /**
    * Get test info.
    */
@@ -97,6 +99,7 @@ class ExtlinkTestCase extends ExtlinkBaseWebTestCase {
  * Test Case for External Links administration functionality.
  */
 class ExtlinkAdminTestCase extends ExtlinkBaseWebTestCase {
+
   /**
    * Get test info.
    */
