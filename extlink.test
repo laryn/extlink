@@ -51,6 +51,8 @@ class ExtlinkBaseWebTestCase extends DrupalWebTestCase {
     $this->adminUser = $this->drupalCreateUser($permissions);
   }
 
+}
+
 /**
  * Test Case for External Links administration functionality.
  */
