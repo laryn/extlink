@@ -117,7 +117,7 @@ Drupal.extlink.attach = function (context, settings) {
     $(external_links).attr('rel', function (i, val) {
       // If no rel attribute is present, create one with the values noopener and noreferrer.
       if (val == null) {
-        return 'noopener nofererer';
+        return 'noopener noreferrer';
       }
       // Check to see if rel contains noopener or noreferrer. Add what doesn't exist.
       if (val.indexOf('noopener') > -1 || val.indexOf('noreferrer') > -1) {
@@ -134,7 +134,7 @@ Drupal.extlink.attach = function (context, settings) {
       }
       // Else, append noopener and noreferrer to val.
       else {
-        return val + ' noopener nofererer';
+        return val + ' noopener noreferrer';
       }
     });
   }
