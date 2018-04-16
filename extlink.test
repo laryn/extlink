@@ -51,50 +51,6 @@ class ExtlinkBaseWebTestCase extends DrupalWebTestCase {
     $this->adminUser = $this->drupalCreateUser($permissions);
   }
 
-  /**
-   * Generate values for node forms.
-   */
-  protected function getNodeFormValues() {
-    $edit = array(
-      'title' => 'node_title ' . $this->randomName(32),
-      'body[' . LANGUAGE_NONE . '][0][value]' => 'node_body ' . $this->randomName(256) . ' <a href="http://google.com">Google!</a>',
-    );
-    return $edit;
-  }
-
-  /**
-   * Test if External Link is present.
-   */
-  protected function assertExternalLinkPresence() {
-    $elements = $this->xpath('//span[@class="ext"]');
-    if (count($elements) > 0) {
-      $this->pass('There should be an External Link on the form.', 'External Links');
-    }
-    else {
-      $this->fail('There should be an External Link on the form.', 'External Links');
-    }
-  }
-
-}
-
-/**
- * Test Case for General External Links functionality.
- */
-class ExtlinkTestCase extends ExtlinkBaseWebTestCase {
-
-  /**
-   * Get test info.
-   */
-  public static function getInfo() {
-    return array(
-      'name' => t('General External Links functionality'),
-      'description' => t('Testing the basic functionality of External Links'),
-      'group' => t('External Links'),
-    );
-  }
-
-}
-
 /**
  * Test Case for External Links administration functionality.
  */
@@ -117,12 +73,10 @@ class ExtlinkAdminTestCase extends ExtlinkBaseWebTestCase {
   public function testAdminAccess() {
     $this->drupalLogin($this->normalUser);
     $this->drupalGet(self::EXTLINK_ADMIN_PATH);
-    file_put_contents('tmp.simpletest.html', $this->drupalGetContent());
     $this->assertText(t('Access denied'), 'Normal users should not be able to access the External Links admin pages', 'External Links');
 
     $this->drupalLogin($this->adminUser);
     $this->drupalGet(self::EXTLINK_ADMIN_PATH);
-    file_put_contents('tmp.simpletest.html', $this->drupalGetContent());
     $this->assertNoText(t('Access denied'), 'Admin users should be able to access the External Links admin pages', 'External Links');
   }
 
