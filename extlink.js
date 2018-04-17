@@ -6,9 +6,9 @@
 
   'use strict';
 
-Drupal.extlink = Drupal.extlink || {};
+  Drupal.extlink = Drupal.extlink || {};
 
-Drupal.extlink.attach = function (context, settings) {
+  Drupal.extlink.attach = function (context, settings) {
   if (!settings.hasOwnProperty('extlink')) {
     return;
   }
@@ -147,7 +147,7 @@ Drupal.extlink.attach = function (context, settings) {
     if (settings.extlink.extAlert) {
       return confirm(settings.extlink.extAlertText);
     }
-   };
+  };
 
   $(external_links).click(function (e) {
     return Drupal.extlink.popupClickHandler(e, this);
@@ -164,7 +164,7 @@ Drupal.extlink.attach = function (context, settings) {
  * @param {string} icon_placement
  *   'append' or 'prepend' the icon to the link.
  */
-Drupal.extlink.applyClassAndSpan = function (links, class_name, icon_placement) {
+  Drupal.extlink.applyClassAndSpan = function (links, class_name, icon_placement) {
   var $links_to_process;
   if (Drupal.settings.extlink.extImgClass) {
     $links_to_process = $(links);
@@ -189,8 +189,8 @@ Drupal.extlink.applyClassAndSpan = function (links, class_name, icon_placement) 
   }
 };
 
-Drupal.behaviors.extlink = Drupal.behaviors.extlink || {};
-Drupal.behaviors.extlink.attach = function (context, settings) {
+  Drupal.behaviors.extlink = Drupal.behaviors.extlink || {};
+  Drupal.behaviors.extlink.attach = function (context, settings) {
   // Backwards compatibility, for the benefit of modules overriding extlink
   // functionality by defining an "extlinkAttach" global function.
   if (typeof extlinkAttach === 'function') {
