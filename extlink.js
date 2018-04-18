@@ -180,10 +180,10 @@
       var $link = $($links_to_process[i]);
       if ($link.css('display') === 'inline' || $link.css('display') === 'inline-block') {
         if (class_name === Drupal.settings.extlink.mailtoClass) {
-          $link[icon_placement]('<span class="' + class_name + '"><span class="element-invisible">' + Drupal.settings.extlink.mailtoLabel + '</span></span>');
+          $link[icon_placement]('<span class="' + class_name + '" aria-label="' + Drupal.settings.extlink.mailtoLabel + '"></span>');
         }
         else {
-          $link[icon_placement]('<span class="' + class_name + '"><span class="element-invisible">' + Drupal.settings.extlink.extLabel + '</span></span>');
+          $link[icon_placement]('<span class="' + class_name + '" aria-label="' + Drupal.settings.extlink.extLabel + '"></span>');
         }
       }
     }
