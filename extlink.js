@@ -68,7 +68,7 @@
     // available in jQuery 1.0 (Drupal 5 default).
     var external_links = [];
     var mailto_links = [];
-    $('a:not(.' + settings.extlink.extClass + ', .' + settings.extlink.mailtoClass + '), area:not(.' + settings.extlink.extClass + ', .' + settings.extlink.mailtoClass + ')', context).each(function (el) {
+    $('a:not([data-extlink]), area:not([data-extlink])', context).each(function (el) {
       try {
         var url = '';
         if (typeof this.href == 'string') {
@@ -173,7 +173,8 @@
       var links_with_images = $(links).find('img').parents('a');
       $links_to_process = $(links).not(links_with_images);
     }
-    $links_to_process.addClass(class_name);
+    // Add data-extlink attribute.
+    $links_to_process.attr('data-extlink','');
     var i;
     var length = $links_to_process.length;
     for (i = 0; i < length; i++) {
