@@ -179,11 +179,19 @@
     for (i = 0; i < length; i++) {
       var $link = $($links_to_process[i]);
       if ($link.css('display') === 'inline' || $link.css('display') === 'inline-block') {
-        if (class_name === Drupal.settings.extlink.mailtoClass) {
-          $link[icon_placement]('<span class="' + class_name + '" aria-label="' + Drupal.settings.extlink.mailtoLabel + '"></span>');
-        }
-        else {
-          $link[icon_placement]('<span class="' + class_name + '" aria-label="' + Drupal.settings.extlink.extLabel + '"></span>');
+        if (Drupal.settings.extlink.extUseFontAwesome) {
+          if (class_name === Drupal.settings.extlink.mailtoClass) {
+            $link[icon_placement]('<span class="fa-' + class_name + ' extlink"><i class="fa fa-envelope-o" title="' + Drupal.settings.extlink.mailtoLabel + '"></i></span>');
+          }else{
+            $link[icon_placement]('<span class="fa-' + class_name + ' extlink"><i class="fa fa-external-link" title="' + Drupal.settings.extlink.extLabel + '"></i></span>');
+          }
+        }else{
+          if (class_name === Drupal.settings.extlink.mailtoClass) {
+            $link[icon_placement]('<span class="' + class_name + '" aria-label="' + Drupal.settings.extlink.mailtoLabel + '"></span>');
+          }
+          else {
+            $link[icon_placement]('<span class="' + class_name + '" aria-label="' + Drupal.settings.extlink.extLabel + '"></span>');
+          }
         }
       }
     }

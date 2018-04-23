@@ -55,6 +55,7 @@ function extlink_page_build() {
       'extAlertText'  => variable_get('extlink_alert_text', 'This link will take you to an external web site. We are not responsible for their content.'),
       'mailtoClass'   => variable_get('extlink_mailto_class', 'mailto'),
       'mailtoLabel'   => check_plain(variable_get('extlink_mailto_label', t('(link sends e-mail)'))),
+      'extUseFontAwesome' => variable_get('extlink_use_font_awesome', FALSE),
     ),
   ), 'setting');
 }
@@ -103,6 +104,14 @@ function extlink_admin_settings() {
     '#return_value' => TRUE,
     '#default_value' => variable_get('extlink_img_class', FALSE),
     '#description' => t('If checked, images wrapped in an anchor tag will be treated as external links.'),
+  );
+
+  $form['extlink_use_font_awesome'] = array(
+    '#type' => 'checkbox',
+    '#title' => t('Use Font Awesome icons instead of images.'),
+    '#return_value' => TRUE,
+    '#default_value' => variable_get('extlink_use_font_awesome', FALSE),
+    '#description' => t('Add Font Awesome classes to the link as well as an i tag rather than images.'),
   );
 
   $form['extlink_icon_placement'] = array(
