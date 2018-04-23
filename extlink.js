@@ -174,7 +174,7 @@
       $links_to_process = $(links).not(links_with_images);
     }
     // Add data-extlink attribute.
-    $links_to_process.attr('data-extlink','');
+    $links_to_process.attr('data-extlink', '');
     var i;
     var length = $links_to_process.length;
     for (i = 0; i < length; i++) {
@@ -183,10 +183,12 @@
         if (Drupal.settings.extlink.extUseFontAwesome) {
           if (class_name === Drupal.settings.extlink.mailtoClass) {
             $link[icon_placement]('<span class="fa-' + class_name + ' extlink"><i class="fa fa-envelope-o" title="' + Drupal.settings.extlink.mailtoLabel + '"></i></span>');
-          }else{
+          }
+          else {
             $link[icon_placement]('<span class="fa-' + class_name + ' extlink"><i class="fa fa-external-link" title="' + Drupal.settings.extlink.extLabel + '"></i></span>');
           }
-        }else{
+        }
+        else {
           if (class_name === Drupal.settings.extlink.mailtoClass) {
             $link[icon_placement]('<span class="' + class_name + '" aria-label="' + Drupal.settings.extlink.mailtoLabel + '"></span>');
           }

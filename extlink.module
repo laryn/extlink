@@ -36,28 +36,34 @@ function extlink_menu() {
 /**
  * Implements hook_page_build().
  */
-function extlink_page_build() {
+function extlink_page_build(&$page) {
   $path = drupal_get_path('module', 'extlink');
-  drupal_add_js($path . '/extlink.js', array('every_page' => TRUE));
-  drupal_add_js(array(
-    'extlink' => array(
-      'extTarget'     => variable_get('extlink_target', 0),
-      'extClass'      => variable_get('extlink_class', 'ext'),
-      'extLabel'      => check_plain(variable_get('extlink_label', t('(link is external)'))),
-      'extImgClass'   => variable_get('extlink_img_class', 0),
-      'extIconPlacement' => variable_get('extlink_icon_placement', 'append'),
-      'extSubdomains' => variable_get('extlink_subdomains', 1),
-      'extExclude'    => variable_get('extlink_exclude', ''),
-      'extInclude'    => variable_get('extlink_include', ''),
-      'extCssExclude' => variable_get('extlink_css_exclude', ''),
-      'extCssExplicit' => variable_get('extlink_css_explicit', ''),
-      'extAlert'      => variable_get('extlink_alert', 0),
-      'extAlertText'  => variable_get('extlink_alert_text', 'This link will take you to an external web site. We are not responsible for their content.'),
-      'mailtoClass'   => variable_get('extlink_mailto_class', 'mailto'),
-      'mailtoLabel'   => check_plain(variable_get('extlink_mailto_label', t('(link sends e-mail)'))),
-      'extUseFontAwesome' => variable_get('extlink_use_font_awesome', FALSE),
-    ),
-  ), 'setting');
+  $page['#attached']['js'][] = [
+    'type' => 'file',
+    'data' => $path . '/extlink.js',
+  ];
+  $page['#attached']['js'][] = [
+    'type' => 'setting',
+    'data' => [
+      'extlink' => [
+        'extTarget'     => variable_get('extlink_target', 0),
+        'extClass'      => variable_get('extlink_class', 'ext'),
+        'extLabel'      => check_plain(variable_get('extlink_label', t('(link is external)'))),
+        'extImgClass'   => variable_get('extlink_img_class', 0),
+        'extIconPlacement' => variable_get('extlink_icon_placement', 'append'),
+        'extSubdomains' => variable_get('extlink_subdomains', 1),
+        'extExclude'    => variable_get('extlink_exclude', ''),
+        'extInclude'    => variable_get('extlink_include', ''),
+        'extCssExclude' => variable_get('extlink_css_exclude', ''),
+        'extCssExplicit' => variable_get('extlink_css_explicit', ''),
+        'extAlert'      => variable_get('extlink_alert', 0),
+        'extAlertText'  => variable_get('extlink_alert_text', 'This link will take you to an external web site. We are not responsible for their content.'),
+        'mailtoClass'   => variable_get('extlink_mailto_class', 'mailto'),
+        'mailtoLabel'   => check_plain(variable_get('extlink_mailto_label', t('(link sends e-mail)'))),
+        'extUseFontAwesome' => variable_get('extlink_use_font_awesome', FALSE),
+      ],
+    ],
+  ];
 }
 
 /**
