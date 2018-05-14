@@ -50,11 +50,11 @@ function extlink_menu() {
  */
 function extlink_page_build(&$page) {
   $path = drupal_get_path('module', 'extlink');
-  $page['#attached']['js'][] = [
+  $page['content']['#attached']['js'][] = [
     'type' => 'file',
     'data' => $path . '/extlink.js',
   ];
-  $page['#attached']['js'][] = [
+  $page['content']['#attached']['js'][] = [
     'type' => 'setting',
     'data' => [
       'extlink' => [
