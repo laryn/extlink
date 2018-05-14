@@ -18,6 +18,18 @@ function extlink_help($path, $arg) {
 }
 
 /**
+ * Implements hook_permission().
+ */
+function extlink_permission() {
+  return array(
+    'administer external link' => array(
+      'title' => t('Administer External Links'),
+      'description' => t('Configure external links.'),
+    ),
+  );
+}
+
+/**
  * Implements hook_menu().
  */
 function extlink_menu() {
@@ -28,7 +40,7 @@ function extlink_menu() {
     'page callback' => 'drupal_get_form',
     'page arguments' => array('extlink_admin_settings'),
     'access callback' => 'user_access',
-    'access arguments' => array('administer site configuration'),
+    'access arguments' => array('administer external link'),
   );
   return $items;
 }
