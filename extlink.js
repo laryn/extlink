@@ -182,18 +182,18 @@
       if ($link.css('display') === 'inline' || $link.css('display') === 'inline-block') {
         if (Drupal.settings.extlink.extUseFontAwesome) {
           if (class_name === Drupal.settings.extlink.mailtoClass) {
-            $link[icon_placement]('<span class="fa-' + class_name + ' extlink"><i class="fa fa-envelope-o" title="' + Drupal.settings.extlink.mailtoLabel + '"></i></span>');
+            $link[icon_placement]('<span class="fa-' + class_name + ' extlink"><span class="fa fa-envelope-o" title="' + Drupal.settings.extlink.mailtoLabel + '"></span><span class="element-invisible">' + Drupal.settings.extlink.mailtoLabel + '</span></span>');
           }
           else {
-            $link[icon_placement]('<span class="fa-' + class_name + ' extlink"><i class="fa fa-external-link" title="' + Drupal.settings.extlink.extLabel + '"></i></span>');
+            $link[icon_placement]('<span class="fa-' + class_name + ' extlink"><span class="fa fa-external-link" title="' + Drupal.settings.extlink.extLabel + '"></span><span class="element-invisible">' + Drupal.settings.extlink.extLabel + '</span></span>');
           }
         }
         else {
           if (class_name === Drupal.settings.extlink.mailtoClass) {
-            $link[icon_placement]('<span class="' + class_name + '" aria-label="' + Drupal.settings.extlink.mailtoLabel + '"></span>');
+            $link[icon_placement]('<span class="' + class_name + '"><span class="element-invisible">' + Drupal.settings.extlink.mailtoLabel + '</span></span>');
           }
           else {
-            $link[icon_placement]('<span class="' + class_name + '" aria-label="' + Drupal.settings.extlink.extLabel + '"></span>');
+            $link[icon_placement]('<span class="' + class_name + '"><span class="element-invisible">' + Drupal.settings.extlink.extLabel + '</span></span>');
           }
         }
       }
