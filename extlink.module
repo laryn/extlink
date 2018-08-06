@@ -293,14 +293,17 @@ function extlink_admin_settings_validate($form, &$form_state) {
   }
 }
 
+/**
+ * Submit handler for admin settings form.
+ */
 function extlink_admin_settings_submit($form, &$form_state) {
-  // Append internal paths & aliases to exclude/include patterns
+  // Append internal paths & aliases to exclude/include patterns.
   foreach (['exclude', 'include'] as $type) {
     $internal = $form_state['values']['extlink_' . $type . '_internal'];
     if ($internal && $internal != variable_get('extlink_' . $type . '_internal')) {
-      // Get lines
+      // Get lines.
       $internal = array_filter(preg_split("/\r\n|\n|\r/", $internal));
-      // Add aliases
+      // Add aliases.
       $internal = array_map(function ($v) {
         $v = trim($v, '/ ');
         $ret = [
@@ -310,10 +313,9 @@ function extlink_admin_settings_submit($form, &$form_state) {
         return implode('|', array_filter($ret));
       }, $internal);
       if (!empty($internal)) {
-        // Implode, add base url & escape slashes
+        // Implode, add base url & escape slashes.
         global $base_url;
         $internal = $base_url . '/(' . implode('|', array_filter($internal)) . ')';
-        // $internal = addcslashes($internal, '/');
       }
       else {
         $internal = NULL;
