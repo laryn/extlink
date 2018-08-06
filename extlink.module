@@ -52,7 +52,7 @@ function extlink_page_build(&$page) {
   $path = drupal_get_path('module', 'extlink');
   $page['content']['#attached']['js'][] = [
     'type' => 'file',
-    'data' => $path . '/extlink.js',
+    'data' => $path . '/js/extlink.js',
   ];
   $page['content']['#attached']['js'][] = [
     'type' => 'setting',
@@ -99,7 +99,7 @@ function extlink_admin_settings() {
       array(
         '!icon' => theme('image',
           array(
-            'path' => drupal_get_path('module', 'extlink') . '/extlink.png',
+            'path' => drupal_get_path('module', 'extlink') . '/images/extlink.png',
             'alt' => t('External Links icon'),
           )
         ),
@@ -115,7 +115,7 @@ function extlink_admin_settings() {
       array(
         '!icon' => theme('image',
           array(
-            'path' => drupal_get_path('module', 'extlink') . '/mailto.png',
+            'path' => drupal_get_path('module', 'extlink') . '/images/mailto.png',
             'alt' => t('Email links icon'),
           )
         ),
@@ -322,4 +322,3 @@ function extlink_admin_settings_submit($form, &$form_state) {
     }
   }
 }
-

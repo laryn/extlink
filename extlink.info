@@ -3,5 +3,5 @@ description = Determine behavior and appearance for external links. Options incl
 package = User interface
 core = 7.x
 configure = admin/config/user-interface/extlink
-stylesheets[all][] = extlink.css
-files[] = extlink.test
+stylesheets[all][] = css/extlink.css
+files[] = tests/extlink.test

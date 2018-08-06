@@ -39,8 +39,12 @@ class ExtlinkBaseWebTestCase extends DrupalWebTestCase {
 
     // Create a normal user without permission.
     $permissions = array(
-      'access comments', 'post comments', 'skip comment approval',
-      'access content', 'create page content', 'edit own page content',
+      'access comments',
+      'post comments',
+      'skip comment approval',
+      'access content',
+      'create page content',
+      'edit own page content',
     );
     $this->normalUser = $this->drupalCreateUser($permissions);
 
