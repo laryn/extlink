@@ -42,7 +42,8 @@
     // Extra external link matching.
     var extExclude = false;
     if (settings.extlink.extExclude) {
-      extExclude = new RegExp(settings.extlink.extExclude.replace(/\\/, '\\'), 'i');
+      var excludeRegexpString = '^https?:\\/\\/(\\b(\\w*?(www.)*?' + settings.extlink.extExclude + '\\w*)\\b)';
+      extExclude = new RegExp(excludeRegexpString.replace( /\\/, '\\' ), 'i');
     }
 
     // Extra external link CSS selector exclusion.
