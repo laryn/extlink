@@ -50,14 +50,14 @@ function extlink_menu() {
  */
 function extlink_page_build(&$page) {
   $path = drupal_get_path('module', 'extlink');
-  $page['content']['#attached']['js'][] = [
+  $page['content']['#attached']['js'][] = array(
     'type' => 'file',
     'data' => $path . '/js/extlink.js',
-  ];
-  $page['content']['#attached']['js'][] = [
+  );
+  $page['content']['#attached']['js'][] = array(
     'type' => 'setting',
-    'data' => [
-      'extlink' => [
+    'data' => array(
+      'extlink' => array(
         'extTarget'     => variable_get('extlink_target', 0),
         'extClass'      => variable_get('extlink_class', 'ext'),
         'extLabel'      => check_plain(variable_get('extlink_label', t('(link is external)'))),
@@ -79,9 +79,9 @@ function extlink_page_build(&$page) {
         'mailtoClass'   => variable_get('extlink_mailto_class', 'mailto'),
         'mailtoLabel'   => check_plain(variable_get('extlink_mailto_label', t('(link sends e-mail)'))),
         'extUseFontAwesome' => variable_get('extlink_use_font_awesome', FALSE),
-      ],
-    ],
-  ];
+      ),
+    ),
+  );
 }
 
 /**
@@ -214,12 +214,12 @@ function extlink_admin_settings() {
     '#description' => t('Enter a regular expression for links that you wish to exclude from being considered external.'),
   );
 
-  $form['patterns']['extlink_exclude_internal'] = [
+  $form['patterns']['extlink_exclude_internal'] = array(
     '#type' => 'textarea',
     '#title' => t('Exclude internal paths'),
     '#default_value' => variable_get('extlink_exclude_internal', ''),
     '#description' => t('Enter internal paths, one per line, that should be excluded, eg. node/1.'),
-  ];
+  );
 
   $form['patterns']['extlink_include'] = array(
     '#type' => 'textfield',
@@ -229,12 +229,12 @@ function extlink_admin_settings() {
     '#description' => t('Enter a regular expression for internal links that you wish to be considered external.'),
   );
 
-  $form['patterns']['extlink_include_internal'] = [
+  $form['patterns']['extlink_include_internal'] = array(
     '#type' => 'textarea',
     '#title' => t('Include internal paths'),
     '#default_value' => variable_get('extlink_include_internal', ''),
     '#description' => t('Enter internal paths, one per line, that should be included, eg. node/1.'),
-  ];
+  );
 
   $form['css_matching'] = array(
     '#tree' => FALSE,
@@ -298,7 +298,7 @@ function extlink_admin_settings_validate($form, &$form_state) {
  */
 function extlink_admin_settings_submit($form, &$form_state) {
   // Append internal paths & aliases to exclude/include patterns.
-  foreach (['exclude', 'include'] as $type) {
+  foreach (array('exclude', 'include') as $type) {
     $internal = $form_state['values']['extlink_' . $type . '_internal'];
     if ($internal && $internal != variable_get('extlink_' . $type . '_internal')) {
       // Get lines.
@@ -306,10 +306,10 @@ function extlink_admin_settings_submit($form, &$form_state) {
       // Add aliases.
       $internal = array_map(function ($v) {
         $v = trim($v, '/ ');
-        $ret = [
+        $ret = array(
           $v,
           drupal_lookup_path('alias', $v),
-        ];
+        );
         return implode('|', array_filter($ret));
       }, $internal);
       if (!empty($internal)) {
