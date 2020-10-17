@@ -49,4 +49,5 @@ Maintainers
 
 Written and maintained by:
 
-- Nate Haug (https://github.com/quicksketch/)
+- Nate Lampton (https://github.com/quicksketch/)
+- Peter Anderson (https://github.com/BWPanda/)
