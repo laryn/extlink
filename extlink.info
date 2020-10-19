@@ -4,4 +4,5 @@ package = User interface
 backdrop = 1.x
 type = module
 configure = admin/config/user-interface/extlink
-stylesheets[all][] = extlink.css
+stylesheets[all][] = css/extlink.css
+scripts[] = js/extlink.js

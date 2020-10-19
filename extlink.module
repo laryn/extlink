@@ -1,5 +1,10 @@
 <?php
 /**
+ * @file
+ * Determine behavior and appearance for external links.
+ */
+
+/**
  * Implements hook_menu().
  */
 function extlink_menu() {
@@ -19,24 +24,22 @@ function extlink_menu() {
  * Implements hook_preprocess_page().
  */
 function extlink_preprocess_page(&$variables) {
-  $path = backdrop_get_path('module', 'extlink');
   $config = config('extlink.settings');
-  backdrop_add_js($path .'/extlink.js', array('every_page' => TRUE));
   backdrop_add_js(array('extlink' => array(
-    'extTarget'     => $config->get('target'),
-    'extClass'      => $config->get('class'),
-    'extLabel'      => check_plain(t($config->get('label'))),
-    'extImgClass'   => $config->get('img_class'),
+    'extTarget' => $config->get('target'),
+    'extClass' => $config->get('class'),
+    'extLabel' => check_plain(t($config->get('label'))),
+    'extImgClass' => $config->get('img_class'),
     'extIconPlacement' => $config->get('icon_placement'),
     'extSubdomains' => $config->get('subdomains'),
-    'extExclude'    => $config->get('exclude'),
-    'extInclude'    => $config->get('include'),
+    'extExclude' => $config->get('exclude'),
+    'extInclude' => $config->get('include'),
     'extCssExclude' => $config->get('css_exclude'),
     'extCssExplicit' => $config->get('css_explicit'),
-    'extAlert'      => $config->get('alert'),
-    'extAlertText'  => $config->get('alert_text'),
-    'mailtoClass'   => $config->get('mailto_class'),
-    'mailtoLabel'   => check_plain(t($config->get('mailto_label'))),
+    'extAlert' => $config->get('alert'),
+    'extAlertText' => $config->get('alert_text'),
+    'mailtoClass' => $config->get('mailto_class'),
+    'mailtoLabel' => check_plain(t($config->get('mailto_label'))),
   )), 'setting');
 }
 
@@ -51,6 +54,11 @@ function extlink_config_info() {
   return $prefixes;
 }
 
+/**
+ * Page callback: Constructs a form for the admin settings.
+ *
+ * @see extlink_menu()
+ */
 function extlink_admin_settings() {
   $form = array();
   $config = config('extlink.settings');
@@ -60,17 +68,15 @@ function extlink_admin_settings() {
     '#title' => t('Place an icon next to external links.'),
     '#return_value' => 'ext',
     '#default_value' => $config->get('class'),
-    '#description' => t('Places an !icon icon next to external links.', array('!icon' => theme('image', array('path' => backdrop_get_path('module', 'extlink') . '/extlink.png', 'alt' => t('External Links icon'))))),
+    '#description' => t('Places a !icon icon next to external links.', array('!icon' => '<span class="ext" alt="External links icon"></span>&nbsp;')),
   );
-
   $form['extlink_mailto_class'] = array(
     '#type' => 'checkbox',
     '#title' => t('Place an icon next to mailto links.'),
     '#return_value' => 'mailto',
     '#default_value' => $config->get('mailto_class'),
-    '#description' => t('Places an !icon icon next to mailto links.', array('!icon' => theme('image',array('path' => backdrop_get_path('module', 'extlink') . '/mailto.png', 'alt' => t('Email links icon'))))),
+    '#description' => t('Places a !icon icon next to mailto links.', array('!icon' => '<span class="mailto" alt="Email links icon"></span>&nbsp;')),
   );
-
   $form['extlink_img_class'] = array(
     '#type' => 'checkbox',
     '#title' => t('Place an icon next to image links.'),
@@ -78,7 +84,6 @@ function extlink_admin_settings() {
     '#default_value' => $config->get('img_class'),
     '#description' => t('If checked, images wrapped in an anchor tag will be treated as external links.'),
   );
-
   $form['extlink_icon_placement'] = array(
     '#type' => 'checkbox',
     '#title' => t('Add icon in front of any processed link'),
@@ -86,28 +91,24 @@ function extlink_admin_settings() {
     '#default_value' => $config->get('icon_placement'),
     '#description' => t('If checked, the icon will be placed in front of any external link, otherwise it will be placed behind it.'),
   );
-
   $form['extlink_subdomains'] = array(
     '#type' => 'checkbox',
     '#title' => t('Exclude links with the same primary domain.'),
     '#default_value' => $config->get('subdomains'),
     '#description' => t("For example, a link from 'www.example.com' to the subdomain of 'my.example.com' would be excluded."),
   );
-
   $form['extlink_target'] = array(
     '#type' => 'checkbox',
     '#title' => t('Open external links in a new window.'),
     '#return_value' => '_blank',
     '#default_value' => $config->get('target'),
   );
-
   $form['extlink_alert'] = array(
     '#type' => 'checkbox',
     '#title' => t('Display a pop-up warning when any external link is clicked.'),
     '#return_value' => '_blank',
     '#default_value' => $config->get('alert'),
   );
-
   $form['extlink_alert_text'] = array(
     '#type' => 'textarea',
     '#title' => t('Text to display in the pop-up warning box.'),
@@ -127,14 +128,12 @@ function extlink_admin_settings() {
     '<code>(example\.com)|(example\.net)</code> ' . t('Multiple patterns can be strung together by using a pipe. Matches example.com OR example.net.'),
     '<code>(links/goto/[0-9]+/[0-9]+)</code> ' . t('Matches links that go through the <a href="http://drupal.org/project/links">Links module</a> redirect.'),
   );
-
   $wildcards = array(
     '<code>.</code> ' . t('Matches any character.'),
     '<code>?</code> ' . t('The previous character or set is optional.'),
     '<code>\d</code> ' . t('Matches any digit (0-9).'),
     '<code>[a-z]</code> ' . t('Brackets may be used to match a custom set of characters. This matches any alphabetic letter.'),
   );
-
   $form['patterns'] = array(
     '#tree' => FALSE,
     '#type' => 'fieldset',
@@ -149,7 +148,6 @@ function extlink_admin_settings() {
       theme('item_list', array('items' => $wildcards)) .
       '<p>' . t('All special characters (!characters) must also be escaped with backslashes. Patterns are not case-sensitive. Any <a href="http://www.javascriptkit.com/javatutors/redev2.shtml">pattern supported by JavaScript</a> may be used.', array('!characters' => '<code>^ $ . ? ( ) | * +</code>')) . '</p>',
   );
-
   $form['patterns']['extlink_exclude'] = array(
     '#type' => 'textfield',
     '#title' => t('Exclude links matching the pattern'),
@@ -157,7 +155,6 @@ function extlink_admin_settings() {
     '#default_value' => $config->get('exclude'),
     '#description' => t('Enter a regular expression for links that you wish to exclude from being considered external.'),
   );
-
   $form['patterns']['extlink_include'] = array(
     '#type' => 'textfield',
     '#title' => t('Include links matching the pattern'),
@@ -175,7 +172,6 @@ function extlink_admin_settings() {
     '#description' =>
       '<p>' . t('Use CSS selectors to exclude entirely or only look inside explicitly specified classes and IDs for external links.  These will be passed straight to jQuery for matching.') . '</p>',
   );
-
   $form['css_matching']['extlink_css_exclude'] = array(
     '#type' => 'textarea',
     '#title' => t('Exclude links inside these CSS selectors'),
@@ -183,7 +179,6 @@ function extlink_admin_settings() {
     '#default_value' => $config->get('css_exclude'),
     '#description' => t('Enter a comma-separated list of CSS selectors (ie "#block-block-2 .content, ul.menu")'),
   );
-
   $form['css_matching']['extlink_css_explicit'] = array(
     '#type' => 'textarea',
     '#title' => t('Only look for links inside these CSS selectors'),
@@ -201,29 +196,41 @@ function extlink_admin_settings() {
   return $form;
 }
 
+/**
+ * Form validation handler for extlink_admin_settings().
+ *
+ * @see extlink_admin_settings_submit()
+ */
 function extlink_admin_settings_validate($form, &$form_state) {
-  // Check if the exclude pattern is a valid regular expression
+  // Check if the exclude pattern is a valid regular expression.
   if ($exclude = $form_state['values']['extlink_exclude']) {
-    // Testing the regex via replace
+    // Testing the regex via replace.
     $regexeval = @preg_replace('/' . $exclude . '/', '', 'Lorem ipsum');
-    // If the regex returns NULL, then throw an error and reset the variable
+    // If the regex returns NULL, then throw an error and reset the variable.
     if ($regexeval === NULL) {
       form_set_error('extlink_exclude', t('Invalid regular expression.'));
     }
   }
-  // Check if the include pattern is a valid regular expression
+
+  // Check if the include pattern is a valid regular expression.
   if ($include = $form_state['values']['extlink_include']) {
-  // Testing the regex via replace
+  // Testing the regex via replace.
   $regexeval = @preg_replace('/' . $include . '/', '', 'Lorem ipsum');
-    // If the regex returns NULL, then throw an error and reset the variable
+    // If the regex returns NULL, then throw an error and reset the variable.
     if ($regexeval === NULL) {
       form_set_error('extlink_include', t('Invalid regular expression.'));
     }
   }
 }
 
+/**
+ * Form submission handler for extlink_admin_settings().
+ *
+ * @see extlink_admin_settings_validate()
+ */
 function extlink_admin_settings_submit($form, &$form_state) {
   $values = $form_state['values'];
+
   $config = config('extlink.settings');
   $config->set('class', $values['extlink_class'] ? $values['extlink_class'] : FALSE);
   $config->set('mailto_class', $values['extlink_mailto_class'] ? $values['extlink_mailto_class'] : FALSE);
@@ -237,5 +244,6 @@ function extlink_admin_settings_submit($form, &$form_state) {
   $config->set('css_exclude', $values['extlink_css_exclude']);
   $config->set('css_explicit', $values['extlink_css_explicit']);
   $config->save();
+
   backdrop_set_message(t('Configuration options saved.'));
 }

@@ -1,11 +1,19 @@
 <?php
+/**
+ * @file
+ * Install, update, and uninstall functions for the External Links module.
+ */
 
 /**
  * Implements hook_install().
  */
 function extlink_install() {
   // Weight needs to be 1 for compatibility with SpamSpan.
-  db_query("UPDATE {system} SET weight = 1 WHERE name = 'extlink'");
+  db_update('system')
+  ->fields(array('weight' => 1))
+  ->condition('type', 'module')
+  ->condition('name', 'extlink')
+  ->execute();
 }
 
 /**

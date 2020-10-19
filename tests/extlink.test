@@ -2,7 +2,7 @@
 /**
  * Base class for External Link tests.
  *
- * Provides common setup stuff and various helper functions
+ * Provides common setup stuff and various helper functions.
  */
 class ExtlinkBaseWebTestCase extends BackdropWebTestCase {
   /**
@@ -12,16 +12,16 @@ class ExtlinkBaseWebTestCase extends BackdropWebTestCase {
   protected $admin_user;
 
   /**
-   * Normal visitor with limited permissions
+   * Normal visitor with limited permissions.
    * @var Backdrop user;
    */
   protected $normal_user;
-  
-    /**
-   * Backdrop path of the (general) External Links admin page
+
+  /**
+   * Backdrop path of the (general) External Links admin page.
    */
   const EXTLINK_ADMIN_PATH = 'admin/config/user-interface/extlink';
-  
+
   function setUp() {
     // Enable any module that you will need in your tests.
     parent::setUp('extlink');
@@ -39,7 +39,7 @@ class ExtlinkBaseWebTestCase extends BackdropWebTestCase {
     $permissions[] = 'administer content types';
     $this->admin_user = $this->backdropCreateUser($permissions);
   }
-  
+
   protected function getNodeFormValues() {
     $edit = array(
       'title' => 'node_title ' . $this->randomName(32),
@@ -47,7 +47,7 @@ class ExtlinkBaseWebTestCase extends BackdropWebTestCase {
     );
     return $edit;
   }
-  
+
   /**
    * Test if External Link is present
    */
@@ -76,4 +76,3 @@ class ExtlinkAdminTestCase extends ExtlinkBaseWebTestCase {
     $this->assertNoText(t('Access denied'), 'Admin users should be able to access the External Links admin pages', 'External Links');
   }
 }
-?>
