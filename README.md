@@ -1,9 +1,11 @@
 External Links
 ==============
 
-The External Links module is a very simple approach to adding icons to links to
-external websites or e-mail addresses. It is a purely JavaScript implementation,
-so the icons are only shown to users that have JavaScript enabled.
+Customise the display and functionality of links to external websites or email
+addresses on your site. You can:
+- Display an icon next to external/mailto links
+- Open external links in a new window/tab
+- Show a popup message when clicking on external links
 
 Installation
 ------------
@@ -12,7 +14,7 @@ Installation
   https://backdropcms.org/guide/modules.
 
 - Visit the configuration page under Administration > Configuration > User
-  interface > External links (`admin/config/user-interface/extlink`) to
+  Interface > External links (`admin/config/user-interface/extlink`) to
   fine-tune the settings.
 
 A note about the CSS
@@ -22,15 +24,15 @@ This module adds a CSS file that is only a few lines in length. You may choose
 to move this CSS to your theme to prevent the file from needing to be loaded
 separately. To do this:
 
-1) Open the `.info` file for your theme and add this line of code to prevent the
-  `extlink.css` file from loading:  
-  `stylesheets[all][] = extlink.css`
+1. Open the `.info` file for your theme and add this line of code to prevent the
+   `extlink.css` file from loading:  
+   `stylesheets[all][] = extlink.css`
 
-2) Copy all the code from this module's `css/extlink.css` file into your theme's
-  CSS file.
+2. Copy all the code from this module's `css/extlink.css` file into your theme's
+   CSS file.
 
-3) Copy the `images/extlink.png` and `images/mailto.png` files to your theme's
-  directory.
+3. Copy the `images/extlink.png` and `images/mailto.png` files to your theme's
+   directory.
 
 Note that you DO NOT need to make an `extlink.css` file in your theme.
 Specifying the file in your theme's `.info` file is enough to tell Backdrop not
@@ -39,7 +41,7 @@ to load this module's version of the CSS.
 Issues
 ------
 
-Bugs and Feature requests should be reported in the Issue Queue:
+Bugs and Feature Requests should be reported in the Issue Queue:
 https://github.com/backdrop-contrib/extlink/issues.
 
 Current Maintainers
