@@ -10,8 +10,13 @@
     "alert": false,
     "alert_text": "This link will take you to an external web site.",
     "exclude": "",
+    "exclude_internal": "",
+    "exclude_internal_pattern": "",
     "include": "",
+    "include_internal": "",
+    "include_internal_pattern": "",
     "css_exclude": "",
     "css_explicit": "",
-    "icon_placement": null
+    "icon_placement": null,
+    "use_font_awesome": false
 }
