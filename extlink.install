@@ -32,8 +32,10 @@ function extlink_update_1000() {
   $config->set('alert_text', update_variable_get('extlink_alert_text', 'This link will take you to an external web site.'));
   $config->set('exclude', update_variable_get('extlink_exclude', ''));
   $config->set('exclude_internal', update_variable_get('extlink_exclude_internal', ''));
+  $config->set('exclude_internal_pattern', update_variable_get('extlink_exclude_internal_pattern', ''));
   $config->set('include', update_variable_get('extlink_include', ''));
   $config->set('include_internal', update_variable_get('extlink_include_internal', ''));
+  $config->set('include_internal_pattern', update_variable_get('extlink_include_internal_pattern', ''));
   $config->set('css_exclude', update_variable_get('extlink_css_exclude', ''));
   $config->set('css_explicit', update_variable_get('extlink_css_explicit', ''));
   $config->set('icon_placement', update_variable_get('extlink_icon_placement', NULL));
@@ -51,8 +53,10 @@ function extlink_update_1000() {
   update_variable_del('extlink_alert_text');
   update_variable_del('extlink_exclude');
   update_variable_del('extlink_exclude_internal');
+  update_variable_del('extlink_exclude_internal_pattern');
   update_variable_del('extlink_include');
   update_variable_del('extlink_include_internal');
+  update_variable_del('extlink_include_internal_pattern');
   update_variable_del('extlink_css_exclude');
   update_variable_del('extlink_css_explicit');
   update_variable_del('extlink_icon_placement');
@@ -73,9 +77,11 @@ function extlink_update_1100() {
   $config = config('extlink.settings');
   if ($config->get('exclude_internal') === NULL) {
     $config->set('exclude_internal', '');
+    $config->set('exclude_internal_pattern', '');
   }
   if ($config->get('include_internal') === NULL) {
     $config->set('include_internal', '');
+    $config->set('include_internal_pattern', '');
   }
   if ($config->get('use_font_awesome') === NULL) {
     $config->set('use_font_awesome', FALSE);

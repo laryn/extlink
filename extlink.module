@@ -44,8 +44,14 @@ function extlink_preprocess_page(&$variables) {
     'extImgClass' => $config->get('img_class'),
     'extIconPlacement' => $config->get('icon_placement'),
     'extSubdomains' => $config->get('subdomains'),
-    'extExclude' => $config->get('exclude'),
-    'extInclude' => $config->get('include'),
+    'extExclude' => implode('|', array_filter(array(
+      $config->get('exclude'),
+      $config->get('exclude_internal_pattern'),
+    ))),
+    'extInclude' => implode('|', array_filter(array(
+      $config->get('include'),
+      $config->get('include_internal_pattern'),
+    ))),
     'extCssExclude' => $config->get('css_exclude'),
     'extCssExplicit' => $config->get('css_explicit'),
     'extAlert' => $config->get('alert'),

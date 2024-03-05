@@ -1,4 +1,3 @@
-(function ($) {
   /**
    * @file
    */
@@ -151,7 +150,7 @@
         }
       };
 
-      $(external_links).click(function (e) {
+      $(external_links).on('click', function (e) {
         return Backdrop.extlink.popupClickHandler(e, this);
       });
     };
