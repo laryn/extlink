@@ -25,7 +25,7 @@ to move this CSS to your theme to prevent the file from needing to be loaded
 separately. To do this:
 
 1. Open the `.info` file for your theme and add this line of code to prevent the
-   `extlink.css` file from loading:  
+   `extlink.css` file from loading:
    `stylesheets[all][] = extlink.css`
 
 2. Copy all the code from this module's `css/extlink.css` file into your theme's
@@ -48,6 +48,7 @@ Current Maintainers
 -------------------
 
 - [Nate Lampton](https://github.com/quicksketch)
+- [Laryn Kragt Bakker](https://github.com/laryn)
 
 Credits
 -------
