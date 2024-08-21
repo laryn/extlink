@@ -1,5 +1,10 @@
 <?php
 /**
+ * @file
+ * External Link tests.
+ */
+
+/**
  * Base class for External Link tests.
  *
  * Provides common setup stuff and various helper functions.
@@ -7,72 +12,63 @@
 class ExtlinkBaseWebTestCase extends BackdropWebTestCase {
   /**
    * User with various administrative permissions.
-   * @var Backdrop user
+   *
+   * @var Backdropuser
    */
-  protected $admin_user;
+  protected $adminUser;
 
   /**
    * Normal visitor with limited permissions.
-   * @var Backdrop user;
+   *
+   * @var Backdropuser
    */
-  protected $normal_user;
+  protected $normalUser;
 
   /**
    * Backdrop path of the (general) External Links admin page.
    */
   const EXTLINK_ADMIN_PATH = 'admin/config/user-interface/extlink';
 
-  function setUp() {
+  /**
+   * Set up tests.
+   */
+  public function setUp() {
     // Enable any module that you will need in your tests.
     parent::setUp('extlink');
 
-    // Create a normal user.
+    // Create a normal user without permission.
     $permissions = array(
-      'access comments', 'post comments', 'skip comment approval',
-      'access content', 'create page content', 'edit own page content',
+      'access comments',
+      'post comments',
+      'skip comment approval',
+      'access content',
+      'create page content',
+      'edit own page content',
     );
-    $this->normal_user = $this->backdropCreateUser($permissions);
+    $this->normalUser = $this->backdropCreateUser($permissions);
 
     // Create an admin user.
-    $permissions[] = 'administer site configuration';
-    $permissions[] = 'administer permissions';
-    $permissions[] = 'administer content types';
-    $this->admin_user = $this->backdropCreateUser($permissions);
+    $permissions[] = 'administer external link';
+    $this->adminUser = $this->backdropCreateUser($permissions);
   }
 
-  protected function getNodeFormValues() {
-    $edit = array(
-      'title' => 'node_title ' . $this->randomName(32),
-      'body[' . LANGUAGE_NONE . '][0][value]' => 'node_body ' . $this->randomName(256) . ' <a href="http://google.com">Google!</a>',
-    );
-    return $edit;
-  }
-
-  /**
-   * Test if External Link is present
-   */
-  protected function assertExternalLinkPresence() {
-    $elements = $this->xpath('//span[@class="ext"]');
-    if (count($elements) > 0)
-       $this->pass('There should be an External Link on the form.', 'External Links');
-    else
-       $this->fail('There should be an External Link on the form.', 'External Links');
-  }
 }
 
+/**
+ * Test Case for External Links administration functionality.
+ */
 class ExtlinkAdminTestCase extends ExtlinkBaseWebTestCase {
   /**
    * Test access to the admin pages.
    */
-  function testAdminAccess() {
-    $this->backdropLogin($this->normal_user);
+  public function testAdminAccess() {
+    $this->backdropLogin($this->normalUser);
     $this->backdropGet(self::EXTLINK_ADMIN_PATH);
-    file_put_contents('tmp.simpletest.html', $this->backdropGetContent());
     $this->assertText(t('Access denied'), 'Normal users should not be able to access the External Links admin pages', 'External Links');
 
-    $this->backdropLogin($this->admin_user);
+    $this->backdropLogin($this->adminUser);
     $this->backdropGet(self::EXTLINK_ADMIN_PATH);
-    file_put_contents('tmp.simpletest.html', $this->backdropGetContent());
     $this->assertNoText(t('Access denied'), 'Admin users should be able to access the External Links admin pages', 'External Links');
   }
+
 }
