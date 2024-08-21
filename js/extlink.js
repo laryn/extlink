@@ -180,7 +180,7 @@
       var length = $links_to_process.length;
       for (i = 0; i < length; i++) {
         var $link = $($links_to_process[i]);
-        if ($link.css('display') === 'inline' || $link.css('display') === 'inline-block') {
+        if ($link.css('display') === 'inline' || $link.css('display') === 'inline-block' || $link.css('display') === 'inline-flex') {
           if (Backdrop.settings.extlink.extUseFontAwesome) {
             if (class_name === Backdrop.settings.extlink.mailtoClass) {
               $link[icon_placement]('<span class="fa-' + class_name + ' extlink"><span class="fa fa-envelope-o" title="' + Backdrop.settings.extlink.mailtoLabel + '"></span><span class="element-invisible">' + Backdrop.settings.extlink.mailtoLabel + '</span></span>');
