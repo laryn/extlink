@@ -42,6 +42,7 @@ function extlink_preprocess_page(&$variables) {
     'extClass' => $config->get('class'),
     'extLabel' => check_plain(t($config->get('label'))),
     'extImgClass' => $config->get('img_class'),
+    'extUseFontAwesome' => $config->get('use_font_awesome'),
     'extIconPlacement' => $config->get('icon_placement'),
     'extSubdomains' => $config->get('subdomains'),
     'extExclude' => implode('|', array_filter(array(
@@ -81,7 +82,7 @@ function extlink_admin_settings() {
   $form = array();
   $config = config('extlink.settings');
 
-  $form['extlink_class'] = array(
+  $form['class'] = array(
     '#type' => 'checkbox',
     '#title' => t('Place an icon next to external links.'),
     '#return_value' => 'ext',
@@ -90,7 +91,7 @@ function extlink_admin_settings() {
       '!icon' => '<span class="ext" alt="External links icon"></span>&nbsp;',
     )),
   );
-  $form['extlink_mailto_class'] = array(
+  $form['mailto_class'] = array(
     '#type' => 'checkbox',
     '#title' => t('Place an icon next to mailto links.'),
     '#return_value' => 'mailto',
@@ -99,46 +100,46 @@ function extlink_admin_settings() {
       '!icon' => '<span class="mailto" alt="Email links icon"></span>&nbsp;',
     )),
   );
-  $form['extlink_img_class'] = array(
+  $form['img_class'] = array(
     '#type' => 'checkbox',
     '#title' => t('Place an icon next to image links.'),
     '#return_value' => TRUE,
     '#default_value' => $config->get('img_class'),
     '#description' => t('If checked, images wrapped in an anchor tag will be treated as external links.'),
   );
-  $form['extlink_use_font_awesome'] = array(
+  $form['use_font_awesome'] = array(
     '#type' => 'checkbox',
     '#title' => t('Use Font Awesome icons instead of images.'),
     '#return_value' => TRUE,
     '#default_value' => $config->get('use_font_awesome'),
     '#description' => t('Add Font Awesome classes to the link as well as an i tag rather than images.'),
   );
-  $form['extlink_icon_placement'] = array(
+  $form['icon_placement'] = array(
     '#type' => 'checkbox',
     '#title' => t('Add icon in front of any processed link'),
     '#return_value' => 'prepend',
     '#default_value' => $config->get('icon_placement'),
     '#description' => t('If checked, the icon will be placed in front of any external link, otherwise it will be placed behind it.'),
   );
-  $form['extlink_subdomains'] = array(
+  $form['subdomains'] = array(
     '#type' => 'checkbox',
     '#title' => t('Exclude links with the same primary domain.'),
     '#default_value' => $config->get('subdomains'),
     '#description' => t("For example, a link from 'www.example.com' to the subdomain of 'my.example.com' would be excluded."),
   );
-  $form['extlink_target'] = array(
+  $form['target'] = array(
     '#type' => 'checkbox',
     '#title' => t('Open external links in a new window.'),
     '#return_value' => '_blank',
     '#default_value' => $config->get('target'),
   );
-  $form['extlink_alert'] = array(
+  $form['alert'] = array(
     '#type' => 'checkbox',
     '#title' => t('Display a pop-up warning when any external link is clicked.'),
     '#return_value' => '_blank',
     '#default_value' => $config->get('alert'),
   );
-  $form['extlink_alert_text'] = array(
+  $form['alert_text'] = array(
     '#type' => 'textarea',
     '#title' => t('Text to display in the pop-up warning box.'),
     '#rows' => 3,
@@ -147,7 +148,7 @@ function extlink_admin_settings() {
     '#states' => array(
       // Only show this field when user opts to display a pop-up warning.
       'visible' => array(
-        ':input[name="extlink_alert"]' => array('checked' => TRUE),
+        ':input[name="alert"]' => array('checked' => TRUE),
       ),
     ),
   );
@@ -155,7 +156,6 @@ function extlink_admin_settings() {
   $patterns = array(
     '<code>(example\.com)</code> ' . t('Matches example.com.'),
     '<code>(example\.com)|(example\.net)</code> ' . t('Multiple patterns can be strung together by using a pipe. Matches example.com OR example.net.'),
-    '<code>(links/goto/[0-9]+/[0-9]+)</code> ' . t('Matches links that go through the <a href="https://drupal.org/project/links">Links module</a> redirect.'),
   );
   $wildcards = array(
     '<code>.</code> ' . t('Matches any character.'),
@@ -173,27 +173,27 @@ function extlink_admin_settings() {
     theme('item_list', array('items' => $patterns)) . t('Common special characters:') .
     theme('item_list', array('items' => $wildcards)) . '<p>' . t('All special characters (!characters) must also be escaped with backslashes. Patterns are not case-sensitive. Any <a href="http://www.javascriptkit.com/javatutors/redev2.shtml">pattern supported by JavaScript</a> may be used.', array('!characters' => '<code>^ $ . ? ( ) | * +</code>')) . '</p>',
   );
-  $form['patterns']['extlink_exclude'] = array(
+  $form['patterns']['exclude'] = array(
     '#type' => 'textfield',
     '#title' => t('Exclude links matching the pattern'),
     '#maxlength' => NULL,
     '#default_value' => $config->get('exclude'),
     '#description' => t('Enter a regular expression for links that you wish to exclude from being considered external.'),
   );
-  $form['patterns']['extlink_exclude_internal'] = array(
+  $form['patterns']['exclude_internal'] = array(
     '#type' => 'textarea',
     '#title' => t('Exclude internal paths'),
     '#default_value' => $config->get('exclude_internal'),
     '#description' => t('Enter internal paths, one per line, that should be excluded, eg. node/1.'),
   );
-  $form['patterns']['extlink_include'] = array(
+  $form['patterns']['include'] = array(
     '#type' => 'textfield',
     '#title' => t('Include links matching the pattern'),
     '#maxlength' => NULL,
     '#default_value' => $config->get('include'),
     '#description' => t('Enter a regular expression for internal links that you wish to be considered external.'),
   );
-  $form['patterns']['extlink_include_internal'] = array(
+  $form['patterns']['include_internal'] = array(
     '#type' => 'textarea',
     '#title' => t('Include internal paths'),
     '#default_value' => $config->get('include_internal'),
@@ -208,14 +208,14 @@ function extlink_admin_settings() {
     '#collapsed' => TRUE,
     '#description' => '<p>' . t('Use CSS selectors to exclude entirely or only look inside explicitly specified classes and IDs for external links.  These will be passed straight to jQuery for matching.') . '</p>',
   );
-  $form['css_matching']['extlink_css_exclude'] = array(
+  $form['css_matching']['css_exclude'] = array(
     '#type' => 'textarea',
     '#title' => t('Exclude links inside these CSS selectors'),
     '#maxlength' => NULL,
     '#default_value' => $config->get('css_exclude'),
     '#description' => t('Enter a comma-separated list of CSS selectors (ie "#block-block-2 .content, ul.menu")'),
   );
-  $form['css_matching']['extlink_css_explicit'] = array(
+  $form['css_matching']['css_explicit'] = array(
     '#type' => 'textarea',
     '#title' => t('Only look for links inside these CSS selectors'),
     '#maxlength' => NULL,
@@ -239,7 +239,7 @@ function extlink_admin_settings() {
  */
 function extlink_admin_settings_validate($form, &$form_state) {
   // Check if the exclude pattern is a valid regular expression.
-  if ($exclude = $form_state['values']['extlink_exclude']) {
+  if ($exclude = $form_state['values']['exclude']) {
     // Testing the regex via replace.
     $regexeval = @preg_replace('/' . $exclude . '/', '', 'Lorem ipsum');
     // If the regex returns NULL, then throw an error and reset the variable.
@@ -248,7 +248,7 @@ function extlink_admin_settings_validate($form, &$form_state) {
     }
   }
   // Check if the include pattern is a valid regular expression.
-  if ($include = $form_state['values']['extlink_include']) {
+  if ($include = $form_state['values']['include']) {
     // Testing the regex via replace.
     $regexeval = @preg_replace('/' . $include . '/', '', 'Lorem ipsum');
     // If the regex returns NULL, then throw an error and reset the variable.
@@ -271,7 +271,7 @@ function extlink_admin_settings_submit($form, &$form_state) {
 
   // Append internal paths & aliases to exclude/include patterns.
   foreach (array('exclude', 'include') as $type) {
-    $internal = $form_state['values']['extlink_' . $type . '_internal'];
+    $internal = $form_state['values'][$type . '_internal'];
     if ($internal && $internal != $config->get($type . '_internal')) {
       // Get lines.
       $internal = array_filter(preg_split("/\r\n|\n|\r/", $internal));
@@ -294,19 +294,21 @@ function extlink_admin_settings_submit($form, &$form_state) {
       }
       $config->set($type . '_internal_pattern', $internal);
     }
-    $config->set('class', $values['extlink_class'] ? $values['extlink_class'] : FALSE);
-    $config->set('mailto_class', $values['extlink_mailto_class'] ? $values['extlink_mailto_class'] : FALSE);
-    $config->set('img_class', $values['extlink_img_class'] ? $values['extlink_img_class'] : FALSE);
-    $config->set('subdomains', (bool) $values['extlink_subdomains']);
-    $config->set('target', $values['extlink_target'] ? $values['extlink_target'] : '');
-    $config->set('alert', (bool) $values['extlink_alert']);
-    $config->set('alert_text', $values['extlink_alert_text']);
-    $config->set('exclude', $values['extlink_exclude']);
-    $config->set('exclude_internal', $values['extlink_exclude_internal']);
-    $config->set('include', $values['extlink_include']);
-    $config->set('include_internal', $values['extlink_include_internal']);
-    $config->set('css_exclude', $values['extlink_css_exclude']);
-    $config->set('css_explicit', $values['extlink_css_explicit']);
+    $config->set('class', $values['class'] ? $values['class'] : FALSE);
+    $config->set('mailto_class', $values['mailto_class'] ? $values['mailto_class'] : FALSE);
+    $config->set('img_class', $values['img_class'] ? $values['img_class'] : FALSE);
+    $config->set('use_font_awesome', $values['use_font_awesome'] ? $values['use_font_awesome'] : FALSE);
+    $config->set('icon_placement', $values['icon_placement'] ? $values['icon_placement'] : '');
+    $config->set('subdomains', (bool) $values['subdomains']);
+    $config->set('target', $values['target'] ? $values['target'] : '');
+    $config->set('alert', (bool) $values['alert']);
+    $config->set('alert_text', $values['alert_text']);
+    $config->set('exclude', $values['exclude']);
+    $config->set('exclude_internal', $values['exclude_internal']);
+    $config->set('include', $values['include']);
+    $config->set('include_internal', $values['include_internal']);
+    $config->set('css_exclude', $values['css_exclude']);
+    $config->set('css_explicit', $values['css_explicit']);
     $config->save();
   }
 }
